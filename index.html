@@ -6,20 +6,19 @@
 <title>鲜惠超市 — Fresh Mart</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root{--green:#2d6a4f;--green-light:#52b788;--green-pale:#d8f3dc;--green-mid:#40916c;--orange:#e76f51;--orange-pale:#ffddd2;--dark:#1b1b1b;--gray:#6b7280;--gray-light:#f3f4f6;--white:#fff;--shadow:0 4px 24px rgba(45,106,79,.10);--shadow-hover:0 8px 32px rgba(45,106,79,.18);--radius:16px;}
+  :root{--green:#2d6a4f;--green-mid:#40916c;--green-pale:#d8f3dc;--orange:#e76f51;--dark:#1b1b1b;--gray:#6b7280;--gray-light:#f3f4f6;--white:#fff;--shadow:0 4px 24px rgba(45,106,79,.10);--shadow-hover:0 8px 32px rgba(45,106,79,.18);--radius:16px;}
   *{margin:0;padding:0;box-sizing:border-box;}
   body{font-family:'Noto Sans SC',sans-serif;background:#f7f9f4;color:var(--dark);}
-  .lang-toggle{display:flex;align-items:center;gap:2px;background:var(--gray-light);border-radius:50px;padding:3px;}
+  .lang-toggle{display:flex;gap:2px;background:var(--gray-light);border-radius:50px;padding:3px;}
   .lang-btn{border:none;background:transparent;border-radius:50px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--gray);transition:all .2s;}
   .lang-btn.active{background:var(--green);color:#fff;}
   nav{background:var(--white);border-bottom:2px solid var(--green-pale);position:sticky;top:0;z-index:100;padding:0 5vw;}
   .nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:16px;height:64px;}
-  .logo{font-family:'Noto Serif SC',serif;font-size:22px;font-weight:700;color:var(--green);white-space:nowrap;text-decoration:none;}
+  .logo{font-family:'Noto Serif SC',serif;font-size:22px;font-weight:700;color:var(--green);text-decoration:none;white-space:nowrap;}
   .logo span{color:var(--orange);}
   .search-bar{flex:1;display:flex;align-items:center;background:var(--gray-light);border-radius:50px;padding:0 16px;gap:8px;}
   .search-bar input{flex:1;border:none;background:transparent;font-size:14px;font-family:inherit;outline:none;color:var(--dark);padding:10px 0;}
-  .search-bar button{background:var(--green);color:#fff;border:none;border-radius:50px;padding:6px 18px;font-size:13px;cursor:pointer;font-family:inherit;transition:background .2s;}
-  .search-bar button:hover{background:var(--green-mid);}
+  .search-bar button{background:var(--green);color:#fff;border:none;border-radius:50px;padding:6px 18px;font-size:13px;cursor:pointer;font-family:inherit;}
   .cart-btn{background:var(--green-pale);border:none;border-radius:50px;padding:10px 20px;cursor:pointer;font-family:inherit;font-size:14px;color:var(--green);font-weight:500;display:flex;align-items:center;gap:6px;transition:all .2s;white-space:nowrap;}
   .cart-btn:hover{background:var(--green);color:#fff;}
   .cart-count{background:var(--orange);color:#fff;border-radius:50%;width:20px;height:20px;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;}
@@ -31,13 +30,13 @@
   .badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:50px;padding:6px 14px;font-size:13px;}
   .hero-emoji{font-size:80px;line-height:1;}
   .banner-strip{background:var(--green-pale);border-top:2px solid rgba(82,183,136,.2);border-bottom:2px solid rgba(82,183,136,.2);padding:12px 5vw;display:flex;gap:32px;justify-content:center;flex-wrap:wrap;}
-  .banner-item{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--green);font-weight:500;}
+  .banner-item{font-size:14px;color:var(--green);font-weight:500;}
   .cats{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;margin-bottom:32px;scrollbar-width:none;}
   .cats::-webkit-scrollbar{display:none;}
-  .cat-pill{flex-shrink:0;background:var(--white);border:2px solid transparent;border-radius:50px;padding:10px 20px;cursor:pointer;font-family:inherit;font-size:14px;font-weight:500;color:var(--gray);transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap;}
+  .cat-pill{flex-shrink:0;background:var(--white);border:2px solid transparent;border-radius:50px;padding:10px 20px;cursor:pointer;font-family:inherit;font-size:14px;font-weight:500;color:var(--gray);transition:all .2s;white-space:nowrap;}
   .cat-pill:hover,.cat-pill.active{border-color:var(--green);color:var(--green);background:var(--green-pale);}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;}
-  .product-card{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:all .25s;cursor:pointer;}
+  .product-card{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:all .25s;}
   .product-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover);}
   .product-img{background:var(--gray-light);height:160px;display:flex;align-items:center;justify-content:center;font-size:60px;position:relative;}
   .tag-sale{position:absolute;top:10px;left:10px;background:var(--orange);color:#fff;border-radius:6px;padding:2px 8px;font-size:11px;font-weight:700;}
@@ -48,10 +47,10 @@
   .product-bottom{display:flex;align-items:center;justify-content:space-between;}
   .price{font-size:18px;font-weight:700;color:var(--green);}
   .price-orig{font-size:12px;color:var(--gray);text-decoration:line-through;margin-left:4px;}
-  .add-btn{background:var(--green);color:#fff;border:none;border-radius:50px;width:32px;height:32px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:inherit;line-height:1;}
+  .add-btn{background:var(--green);color:#fff;border:none;border-radius:50px;width:32px;height:32px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;line-height:1;}
   .add-btn:hover{background:var(--orange);transform:scale(1.1);}
   .qty-ctrl{display:flex;align-items:center;gap:8px;}
-  .qty-ctrl button{background:var(--gray-light);border:none;border-radius:50%;width:28px;height:28px;font-size:16px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+  .qty-ctrl button{background:var(--gray-light);border:none;border-radius:50%;width:28px;height:28px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
   .qty-ctrl button:hover{background:var(--green-pale);}
   .qty-ctrl span{font-size:14px;font-weight:700;min-width:16px;text-align:center;}
   .cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s;}
@@ -60,8 +59,7 @@
   .cart-sidebar.open{transform:translateX(0);}
   .cart-header{padding:20px 24px;border-bottom:2px solid var(--green-pale);display:flex;align-items:center;justify-content:space-between;}
   .cart-header h2{font-family:'Noto Serif SC',serif;font-size:20px;font-weight:700;}
-  .close-btn{background:var(--gray-light);border:none;border-radius:50%;width:36px;height:36px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-  .close-btn:hover{background:var(--green-pale);}
+  .close-btn{background:var(--gray-light);border:none;border-radius:50%;width:36px;height:36px;font-size:18px;cursor:pointer;}
   .cart-items{flex:1;overflow-y:auto;padding:16px 24px;}
   .cart-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--gray-light);}
   .cart-item-emoji{font-size:36px;}
@@ -72,14 +70,26 @@
   .cart-empty .empty-emoji{font-size:56px;margin-bottom:12px;}
   .cart-footer{padding:20px 24px;border-top:2px solid var(--green-pale);}
   .cart-total{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
-  .cart-total-label{font-size:16px;color:var(--gray);}
   .cart-total-price{font-size:24px;font-weight:700;color:var(--green);}
-  .checkout-btn{width:100%;background:var(--green);color:#fff;border:none;border-radius:50px;padding:16px;font-size:16px;font-weight:700;font-family:inherit;cursor:pointer;transition:background .2s;}
+  .checkout-btn{width:100%;background:var(--green);color:#fff;border:none;border-radius:50px;padding:16px;font-size:16px;font-weight:700;font-family:inherit;cursor:pointer;}
   .checkout-btn:hover{background:var(--orange);}
-  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--dark);color:#fff;border-radius:50px;padding:12px 24px;font-size:14px;font-weight:500;z-index:300;transition:transform .3s ease;white-space:nowrap;pointer-events:none;}
+  .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:300;display:none;align-items:center;justify-content:center;}
+  .modal-bg.open{display:flex;}
+  .modal{background:var(--white);border-radius:20px;width:min(480px,92vw);padding:28px;max-height:90vh;overflow-y:auto;}
+  .modal h3{font-family:'Noto Serif SC',serif;font-size:20px;font-weight:700;margin-bottom:20px;}
+  .frow{margin-bottom:14px;}
+  .frow label{display:block;font-size:13px;color:var(--gray);margin-bottom:5px;}
+  .frow input,.frow select{width:100%;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 14px;font-size:14px;font-family:inherit;outline:none;}
+  .frow input:focus,.frow select:focus{border-color:var(--green);}
+  .modal-summary{background:var(--green-pale);border-radius:10px;padding:12px 16px;margin:12px 0;font-size:14px;color:var(--green);}
+  .modal-footer{display:flex;gap:10px;margin-top:20px;}
+  .modal-footer button{flex:1;border:none;border-radius:50px;padding:14px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;}
+  .btn-cancel{background:var(--gray-light);color:var(--gray);}
+  .btn-confirm{background:var(--green);color:#fff;}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--dark);color:#fff;border-radius:50px;padding:12px 24px;font-size:14px;font-weight:500;z-index:400;transition:transform .3s ease;white-space:nowrap;pointer-events:none;}
   .toast.show{transform:translateX(-50%) translateY(0);}
   .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
-  .section-title{font-family:'Noto Serif SC',serif;font-size:22px;font-weight:700;color:var(--dark);}
+  .section-title{font-family:'Noto Serif SC',serif;font-size:22px;font-weight:700;}
   @media(max-width:600px){.hero-emoji{display:none;}.grid{grid-template-columns:repeat(2,1fr);gap:10px;}.product-img{height:120px;font-size:44px;}}
 </style>
 </head>
@@ -91,17 +101,13 @@
       <input type="text" id="searchInput" oninput="filterProducts()">
       <button id="searchBtn" onclick="filterProducts()">搜索</button>
     </div>
-    <button class="cart-btn" onclick="openCart()">
-      🛒 <span id="navCartLabel">购物车</span>
-      <span class="cart-count" id="cartCount">0</span>
-    </button>
+    <button class="cart-btn" onclick="openCart()">🛒 <span id="navCartLabel">购物车</span><span class="cart-count" id="cartCount">0</span></button>
     <div class="lang-toggle">
       <button class="lang-btn active" id="btnZH" onclick="setLang('zh')">中文</button>
       <button class="lang-btn" id="btnEN" onclick="setLang('en')">EN</button>
     </div>
   </div>
 </nav>
-
 <div class="hero">
   <div class="hero-inner">
     <div>
@@ -116,24 +122,21 @@
     <div class="hero-emoji">🥦🍎🥛</div>
   </div>
 </div>
-
 <div class="banner-strip">
   <div class="banner-item" id="bn1">🚚 满 ¥99 免配送费</div>
   <div class="banner-item" id="bn2">🎁 新用户立减 ¥20</div>
   <div class="banner-item" id="bn3">⏰ 今日特价 23:59 截止</div>
   <div class="banner-item" id="bn4">🌟 积分兑好礼</div>
 </div>
-
 <div style="max-width:1200px;margin:0 auto;padding:32px 5vw 0">
   <div class="cats" id="catBar"></div>
   <div class="section-header">
     <div class="section-title" id="sectionTitle"></div>
     <span style="font-size:13px;color:var(--gray)" id="productCount"></span>
   </div>
-  <div class="grid" id="productGrid"></div>
+  <div class="grid" id="productGrid"><div style="grid-column:1/-1;text-align:center;padding:48px;font-size:28px">⏳</div></div>
   <div style="height:48px"></div>
 </div>
-
 <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
 <div class="cart-sidebar" id="cartSidebar">
   <div class="cart-header">
@@ -143,178 +146,157 @@
   <div class="cart-items" id="cartItems"></div>
   <div class="cart-footer">
     <div class="cart-total">
-      <span class="cart-total-label" id="totalLabel">合计</span>
+      <span style="font-size:16px;color:var(--gray)" id="totalLabel">合计</span>
       <span class="cart-total-price" id="cartTotal">¥0.00</span>
     </div>
-    <button class="checkout-btn" id="checkoutBtn" onclick="checkout()">立即结算</button>
+    <button class="checkout-btn" id="checkoutBtn" onclick="openCheckout()">立即结算</button>
+  </div>
+</div>
+<div class="modal-bg" id="checkoutModal">
+  <div class="modal">
+    <h3 id="checkoutTitle">📋 填写收货信息</h3>
+    <div class="frow"><label id="lName">收货人姓名</label><input type="text" id="rName" placeholder="请输入姓名"></div>
+    <div class="frow"><label id="lPhone">手机号码</label><input type="tel" id="rPhone" placeholder="请输入手机号"></div>
+    <div class="frow"><label id="lAddr">收货地址</label><input type="text" id="rAddr" placeholder="请输入详细地址"></div>
+    <div class="frow"><label id="lTime">配送时间</label>
+      <select id="dTime">
+        <option>尽快配送（2小时内）/ ASAP (within 2hrs)</option>
+        <option>今日 12:00–14:00 / Today 12:00–14:00</option>
+        <option>今日 18:00–20:00 / Today 18:00–20:00</option>
+        <option>明日 09:00–11:00 / Tomorrow 09:00–11:00</option>
+      </select>
+    </div>
+    <div class="modal-summary" id="orderSummary"></div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeCheckout()" id="btnCancel">取消</button>
+      <button class="btn-confirm" onclick="submitOrder()" id="btnConfirm">提交订单</button>
+    </div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
-
 <script>
-const T={
-  zh:{
-    searchPlaceholder:'搜索商品，例如：苹果、牛奶…',searchBtn:'搜索',cartLabel:'购物车',
-    heroTitle:'新鲜直达<br>每日优惠',heroSub:'精选本地农场直供，当日采摘当日送达',
-    badge1:'🚚 2小时配送',badge2:'🌿 产地直供',badge3:'💰 天天特价',
-    bn1:'🚚 满 ¥99 免配送费',bn2:'🎁 新用户立减 ¥20',bn3:'⏰ 今日特价 23:59 截止',bn4:'🌟 积分兑好礼',
-    cats:['🏪 全部','🥬 生鲜蔬果','🥩 肉禽蛋品','🥛 乳品冷饮','🍪 零食饮料','🌾 粮油调味','🧴 日用清洁'],
-    catKeys:['ALL','生鲜','肉禽','乳品','零食','粮油','日用'],
-    catTitles:{ALL:'🛒 全部商品',生鲜:'🥬 生鲜蔬果',肉禽:'🥩 肉禽蛋品',乳品:'🥛 乳品冷饮',零食:'🍪 零食饮料',粮油:'🌾 粮油调味',日用:'🧴 日用清洁'},
-    countTpl:n=>`共 ${n} 件商品`,noResult:'😢 没有找到相关商品',
-    tagSale:'特价',tagNew:'新品',
-    cartTitle:'🛒 我的购物车',totalLabel:'合计',checkoutBtn:'立即结算',
-    emptyCart:'购物车还是空的',emptyCartSub:'快去挑选商品吧～',
-    addedToast:p=>`已加入 ${p.emoji} ${p.nameZh}`,
-    orderToast:amt=>`🎉 订单已提交！合计 ¥${amt}`,emptyToast:'购物车是空的～',
-  },
-  en:{
-    searchPlaceholder:'Search products, e.g. apple, milk…',searchBtn:'Search',cartLabel:'Cart',
-    heroTitle:'Farm Fresh<br>Daily Deals',heroSub:'Direct from local farms — picked and delivered same day',
-    badge1:'🚚 2-hr Delivery',badge2:'🌿 Farm Direct',badge3:'💰 Daily Deals',
-    bn1:'🚚 Free shipping over ¥99',bn2:'🎁 New user ¥20 off',bn3:"⏰ Today's deals end 23:59",bn4:'🌟 Earn reward points',
-    cats:['🏪 All','🥬 Fresh & Veg','🥩 Meat & Eggs','🥛 Dairy','🍪 Snacks','🌾 Grains & Oils','🧴 Essentials'],
-    catKeys:['ALL','生鲜','肉禽','乳品','零食','粮油','日用'],
-    catTitles:{ALL:'🛒 All Products',生鲜:'🥬 Fresh & Veg',肉禽:'🥩 Meat & Eggs',乳品:'🥛 Dairy',零食:'🍪 Snacks',粮油:'🌾 Grains & Oils',日用:'🧴 Essentials'},
-    countTpl:n=>`${n} products`,noResult:'😢 No products found',
-    tagSale:'SALE',tagNew:'NEW',
-    cartTitle:'🛒 My Cart',totalLabel:'Total',checkoutBtn:'Checkout',
-    emptyCart:'Your cart is empty',emptyCartSub:'Start adding some items!',
-    addedToast:p=>`Added ${p.emoji} ${p.nameEn}`,
-    orderToast:amt=>`🎉 Order placed! Total ¥${amt}`,emptyToast:'Your cart is empty',
-  }
-};
+const SB_URL='https://zzbdfuusbbbupxwlkyth.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6YmRmdXVzYmJidXB4d2xreXRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1NzcyMzQsImV4cCI6MjA4OTE1MzIzNH0.oHv8KlOuRh1TRKsFY32p2JIWu1Qghq91tigzRxaSMvE';
+const H={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=representation'};
+const api=async(m,path,body)=>{const r=await fetch(SB_URL+'/rest/v1/'+path,{method:m,headers:H,body:body?JSON.stringify(body):undefined});return r.json();};
+const GET=(p,q)=>api('GET',p+(q?'?'+q:''));
+const POST=(p,b)=>api('POST',p,b);
+const PATCH=(p,q,b)=>api('PATCH',p+'?'+q,b);
 
-const products=[
-  {id:1,nameZh:'有机西兰花',nameEn:'Organic Broccoli',unitZh:'约500g/棵',unitEn:'~500g/head',price:5.9,orig:8.8,emoji:'🥦',cat:'生鲜',tag:'sale'},
-  {id:2,nameZh:'新疆苹果',nameEn:'Xinjiang Apple',unitZh:'约1kg装',unitEn:'~1kg pack',price:12.9,orig:null,emoji:'🍎',cat:'生鲜',tag:'new'},
-  {id:3,nameZh:'本地胡萝卜',nameEn:'Local Carrot',unitZh:'500g',unitEn:'500g',price:3.5,orig:null,emoji:'🥕',cat:'生鲜',tag:null},
-  {id:4,nameZh:'砂糖橙',nameEn:'Navel Orange',unitZh:'约1kg',unitEn:'~1kg',price:9.9,orig:14.9,emoji:'🍊',cat:'生鲜',tag:'sale'},
-  {id:5,nameZh:'散养土鸡蛋',nameEn:'Free-range Eggs',unitZh:'30枚装',unitEn:'30 pcs',price:28.9,orig:35,emoji:'🥚',cat:'肉禽',tag:'sale'},
-  {id:6,nameZh:'新鲜猪里脊',nameEn:'Pork Tenderloin',unitZh:'300g',unitEn:'300g',price:19.9,orig:null,emoji:'🥩',cat:'肉禽',tag:null},
-  {id:7,nameZh:'鲜嫩鸡腿',nameEn:'Chicken Drumstick',unitZh:'500g',unitEn:'500g',price:16.5,orig:null,emoji:'🍗',cat:'肉禽',tag:'new'},
-  {id:8,nameZh:'大闸蟹',nameEn:'Hairy Crab',unitZh:'2只装',unitEn:'2 pcs',price:39.9,orig:58,emoji:'🦀',cat:'肉禽',tag:'sale'},
-  {id:9,nameZh:'纯牛奶',nameEn:'Pure Milk',unitZh:'250ml×12盒',unitEn:'250ml×12',price:35.9,orig:42,emoji:'🥛',cat:'乳品',tag:'sale'},
-  {id:10,nameZh:'草莓酸奶',nameEn:'Strawberry Yogurt',unitZh:'200g×4杯',unitEn:'200g×4 cups',price:18.9,orig:null,emoji:'🍓',cat:'乳品',tag:'new'},
-  {id:11,nameZh:'冰淇淋',nameEn:'Ice Cream',unitZh:'73g×6支',unitEn:'73g×6 bars',price:22,orig:null,emoji:'🍦',cat:'乳品',tag:null},
-  {id:12,nameZh:'薯片大礼包',nameEn:'Chips Party Pack',unitZh:'混合口味480g',unitEn:'Assorted 480g',price:26.9,orig:38,emoji:'🍟',cat:'零食',tag:'sale'},
-  {id:13,nameZh:'矿泉水',nameEn:'Mineral Water',unitZh:'550ml×24瓶',unitEn:'550ml×24 btls',price:19.9,orig:null,emoji:'💧',cat:'零食',tag:null},
-  {id:14,nameZh:'绿茶饮料',nameEn:'Green Tea Drink',unitZh:'500ml×6瓶',unitEn:'500ml×6 btls',price:16.5,orig:null,emoji:'🍵',cat:'零食',tag:null},
-  {id:15,nameZh:'东北大米',nameEn:'Northeast Rice',unitZh:'5kg',unitEn:'5kg',price:49.9,orig:65,emoji:'🌾',cat:'粮油',tag:'sale'},
-  {id:16,nameZh:'菜籽油',nameEn:'Rapeseed Oil',unitZh:'5L',unitEn:'5L',price:89.9,orig:null,emoji:'🫙',cat:'粮油',tag:null},
-  {id:17,nameZh:'洗洁精',nameEn:'Dish Soap',unitZh:'500ml×2瓶',unitEn:'500ml×2 btls',price:12.9,orig:null,emoji:'🧴',cat:'日用',tag:null},
-  {id:18,nameZh:'厨房纸巾',nameEn:'Kitchen Roll',unitZh:'2层×60张×3卷',unitEn:'2ply 60sh×3 rolls',price:9.9,orig:15,emoji:'🧻',cat:'日用',tag:'sale'},
+const SEEDS=[
+  {name_zh:'有机西兰花',name_en:'Organic Broccoli',category:'生鲜',emoji:'🥦',price:5.9,original_price:8.8,unit_zh:'约500g/棵',unit_en:'~500g/head',stock:86,tag:'sale',active:true},
+  {name_zh:'新疆苹果',name_en:'Xinjiang Apple',category:'生鲜',emoji:'🍎',price:12.9,original_price:null,unit_zh:'约1kg装',unit_en:'~1kg pack',stock:120,tag:'new',active:true},
+  {name_zh:'本地胡萝卜',name_en:'Local Carrot',category:'生鲜',emoji:'🥕',price:3.5,original_price:null,unit_zh:'500g',unit_en:'500g',stock:200,tag:null,active:true},
+  {name_zh:'砂糖橙',name_en:'Navel Orange',category:'生鲜',emoji:'🍊',price:9.9,original_price:14.9,unit_zh:'约1kg',unit_en:'~1kg',stock:95,tag:'sale',active:true},
+  {name_zh:'散养土鸡蛋',name_en:'Free-range Eggs',category:'肉禽',emoji:'🥚',price:28.9,original_price:35,unit_zh:'30枚装',unit_en:'30 pcs',stock:52,tag:'sale',active:true},
+  {name_zh:'新鲜猪里脊',name_en:'Pork Tenderloin',category:'肉禽',emoji:'🥩',price:19.9,original_price:null,unit_zh:'300g',unit_en:'300g',stock:18,tag:null,active:true},
+  {name_zh:'鲜嫩鸡腿',name_en:'Chicken Drumstick',category:'肉禽',emoji:'🍗',price:16.5,original_price:null,unit_zh:'500g',unit_en:'500g',stock:40,tag:'new',active:true},
+  {name_zh:'大闸蟹',name_en:'Hairy Crab',category:'肉禽',emoji:'🦀',price:39.9,original_price:58,unit_zh:'2只装',unit_en:'2 pcs',stock:12,tag:'sale',active:true},
+  {name_zh:'纯牛奶',name_en:'Pure Milk',category:'乳品',emoji:'🥛',price:35.9,original_price:42,unit_zh:'250ml×12盒',unit_en:'250ml×12',stock:74,tag:'sale',active:true},
+  {name_zh:'草莓酸奶',name_en:'Strawberry Yogurt',category:'乳品',emoji:'🍓',price:18.9,original_price:null,unit_zh:'200g×4杯',unit_en:'200g×4 cups',stock:60,tag:'new',active:true},
+  {name_zh:'冰淇淋',name_en:'Ice Cream',category:'乳品',emoji:'🍦',price:22,original_price:null,unit_zh:'73g×6支',unit_en:'73g×6 bars',stock:35,tag:null,active:true},
+  {name_zh:'薯片大礼包',name_en:'Chips Party Pack',category:'零食',emoji:'🍟',price:26.9,original_price:38,unit_zh:'混合口味480g',unit_en:'Assorted 480g',stock:8,tag:'sale',active:true},
+  {name_zh:'矿泉水',name_en:'Mineral Water',category:'零食',emoji:'💧',price:19.9,original_price:null,unit_zh:'550ml×24瓶',unit_en:'550ml×24 btls',stock:150,tag:null,active:true},
+  {name_zh:'绿茶饮料',name_en:'Green Tea Drink',category:'零食',emoji:'🍵',price:16.5,original_price:null,unit_zh:'500ml×6瓶',unit_en:'500ml×6 btls',stock:80,tag:null,active:true},
+  {name_zh:'东北大米',name_en:'Northeast Rice',category:'粮油',emoji:'🌾',price:49.9,original_price:65,unit_zh:'5kg',unit_en:'5kg',stock:45,tag:'sale',active:true},
+  {name_zh:'菜籽油',name_en:'Rapeseed Oil',category:'粮油',emoji:'🫙',price:89.9,original_price:null,unit_zh:'5L',unit_en:'5L',stock:30,tag:null,active:true},
+  {name_zh:'洗洁精',name_en:'Dish Soap',category:'日用',emoji:'🧴',price:12.9,original_price:null,unit_zh:'500ml×2瓶',unit_en:'500ml×2 btls',stock:90,tag:null,active:true},
+  {name_zh:'厨房纸巾',name_en:'Kitchen Roll',category:'日用',emoji:'🧻',price:9.9,original_price:15,unit_zh:'2层×60张×3卷',unit_en:'2ply 60sh×3 rolls',stock:15,tag:'sale',active:true},
 ];
 
-let lang='zh',cart={},currentCat='ALL',searchTerm='';
+const T={
+  zh:{sp:'搜索商品，例如：苹果、牛奶…',sb:'搜索',cl:'购物车',ht:'新鲜直达<br>每日优惠',hs:'精选本地农场直供，当日采摘当日送达',b1:'🚚 2小时配送',b2:'🌿 产地直供',b3:'💰 天天特价',bn1:'🚚 满 ¥99 免配送费',bn2:'🎁 新用户立减 ¥20',bn3:'⏰ 今日特价 23:59 截止',bn4:'🌟 积分兑好礼',cats:['🏪 全部','🥬 生鲜蔬果','🥩 肉禽蛋品','🥛 乳品冷饮','🍪 零食饮料','🌾 粮油调味','🧴 日用清洁'],keys:['ALL','生鲜','肉禽','乳品','零食','粮油','日用'],titles:{ALL:'🛒 全部商品',生鲜:'🥬 生鲜蔬果',肉禽:'🥩 肉禽蛋品',乳品:'🥛 乳品冷饮',零食:'🍪 零食饮料',粮油:'🌾 粮油调味',日用:'🧴 日用清洁'},cnt:n=>`共 ${n} 件商品`,noRes:'😢 没有找到相关商品',tsale:'特价',tnew:'新品',ctitle:'🛒 我的购物车',tlabel:'合计',cobtn:'立即结算',eCart:'购物车还是空的',eSub:'快去挑选商品吧～',added:p=>`已加入 ${p.emoji} ${p.name_zh}`,empty:'购物车是空的～',ckTitle:'📋 填写收货信息',lName:'收货人姓名',lPhone:'手机号码',lAddr:'收货地址',lTime:'配送时间',cancel:'取消',confirm:'提交订单',ok:a=>`🎉 订单已提交！合计 ¥${a}`,fail:'提交失败，请重试',fill:'请填写完整收货信息',sum:(n,t)=>`共 ${n} 件商品，合计 ¥${t}`,},
+  en:{sp:'Search products, e.g. apple, milk…',sb:'Search',cl:'Cart',ht:'Farm Fresh<br>Daily Deals',hs:'Direct from local farms — picked and delivered same day',b1:'🚚 2-hr Delivery',b2:'🌿 Farm Direct',b3:'💰 Daily Deals',bn1:'🚚 Free shipping over ¥99',bn2:'🎁 New user ¥20 off',bn3:"⏰ Today's deals end 23:59",bn4:'🌟 Earn reward points',cats:['🏪 All','🥬 Fresh & Veg','🥩 Meat & Eggs','🥛 Dairy','🍪 Snacks','🌾 Grains & Oils','🧴 Essentials'],keys:['ALL','生鲜','肉禽','乳品','零食','粮油','日用'],titles:{ALL:'🛒 All Products',生鲜:'🥬 Fresh & Veg',肉禽:'🥩 Meat & Eggs',乳品:'🥛 Dairy',零食:'🍪 Snacks',粮油:'🌾 Grains & Oils',日用:'🧴 Essentials'},cnt:n=>`${n} products`,noRes:'😢 No products found',tsale:'SALE',tnew:'NEW',ctitle:'🛒 My Cart',tlabel:'Total',cobtn:'Checkout',eCart:'Your cart is empty',eSub:'Start adding some items!',added:p=>`Added ${p.emoji} ${p.name_en}`,empty:'Your cart is empty',ckTitle:'📋 Delivery Info',lName:'Recipient Name',lPhone:'Phone',lAddr:'Address',lTime:'Delivery Time',cancel:'Cancel',confirm:'Place Order',ok:a=>`🎉 Order placed! Total ¥${a}`,fail:'Failed, please retry',fill:'Please fill in all fields',sum:(n,t)=>`${n} items · ¥${t}`,},
+};
 
-function setLang(l){
-  lang=l;
-  document.getElementById('btnZH').classList.toggle('active',l==='zh');
-  document.getElementById('btnEN').classList.toggle('active',l==='en');
-  applyLang();
-}
+let lang='zh',cart={},cat='ALL',q='',products=[];
 
+function setLang(l){lang=l;document.getElementById('btnZH').classList.toggle('active',l==='zh');document.getElementById('btnEN').classList.toggle('active',l==='en');applyLang();}
 function applyLang(){
   const t=T[lang];
-  document.getElementById('searchInput').placeholder=t.searchPlaceholder;
-  document.getElementById('searchBtn').textContent=t.searchBtn;
-  document.getElementById('navCartLabel').textContent=t.cartLabel;
-  document.getElementById('heroTitle').innerHTML=t.heroTitle;
-  document.getElementById('heroSub').textContent=t.heroSub;
-  ['badge1','badge2','badge3','bn1','bn2','bn3','bn4'].forEach(id=>document.getElementById(id).textContent=t[id]);
-  document.getElementById('cartTitle').textContent=t.cartTitle;
-  document.getElementById('totalLabel').textContent=t.totalLabel;
-  document.getElementById('checkoutBtn').textContent=t.checkoutBtn;
-  renderCats(); renderGrid(); renderCartItems();
+  document.getElementById('searchInput').placeholder=t.sp;
+  document.getElementById('searchBtn').textContent=t.sb;
+  document.getElementById('navCartLabel').textContent=t.cl;
+  document.getElementById('heroTitle').innerHTML=t.ht;
+  document.getElementById('heroSub').textContent=t.hs;
+  ['b1','b2','b3','bn1','bn2','bn3','bn4'].forEach(id=>document.getElementById(id).textContent=t[id]);
+  document.getElementById('cartTitle').textContent=t.ctitle;
+  document.getElementById('totalLabel').textContent=t.tlabel;
+  document.getElementById('checkoutBtn').textContent=t.cobtn;
+  document.getElementById('checkoutTitle').textContent=t.ckTitle;
+  document.getElementById('lName').textContent=t.lName;
+  document.getElementById('lPhone').textContent=t.lPhone;
+  document.getElementById('lAddr').textContent=t.lAddr;
+  document.getElementById('lTime').textContent=t.lTime;
+  document.getElementById('btnCancel').textContent=t.cancel;
+  document.getElementById('btnConfirm').textContent=t.confirm;
+  renderCats();renderGrid();renderCart();
 }
-
 function renderCats(){
   const t=T[lang];
-  document.getElementById('catBar').innerHTML=t.cats.map((label,i)=>{
-    const key=t.catKeys[i];
-    return `<button class="cat-pill${currentCat===key?' active':''}" onclick="setCategory('${key}',this)">${label}</button>`;
-  }).join('');
-  document.getElementById('sectionTitle').textContent=T[lang].catTitles[currentCat]||'';
+  document.getElementById('catBar').innerHTML=t.cats.map((l,i)=>`<button class="cat-pill${cat===t.keys[i]?' active':''}" onclick="setCat('${t.keys[i]}',this)">${l}</button>`).join('');
+  document.getElementById('sectionTitle').textContent=t.titles[cat]||'';
 }
-
-function setCategory(cat,el){
-  currentCat=cat;
-  document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('sectionTitle').textContent=T[lang].catTitles[cat]||cat;
-  renderGrid();
-}
-
-function filterProducts(){searchTerm=document.getElementById('searchInput').value.trim();renderGrid();}
-
-function getFiltered(){
-  return products.filter(p=>{
-    const matchCat=currentCat==='ALL'||p.cat===currentCat;
-    const name=lang==='zh'?p.nameZh:p.nameEn;
-    const matchSearch=!searchTerm||name.toLowerCase().includes(searchTerm.toLowerCase())||p.nameZh.includes(searchTerm);
-    return matchCat&&matchSearch;
-  });
-}
-
+function setCat(c,el){cat=c;document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));el.classList.add('active');document.getElementById('sectionTitle').textContent=T[lang].titles[c]||c;renderGrid();}
+function filterProducts(){q=document.getElementById('searchInput').value.trim();renderGrid();}
+function filtered(){return products.filter(p=>{if(!p.active)return false;const mc=cat==='ALL'||p.category===cat;const n=lang==='zh'?p.name_zh:p.name_en;const ms=!q||n.toLowerCase().includes(q.toLowerCase())||p.name_zh.includes(q);return mc&&ms;});}
 function renderGrid(){
-  const t=T[lang]; const list=getFiltered(); const grid=document.getElementById('productGrid');
-  document.getElementById('productCount').textContent=t.countTpl(list.length);
-  if(!list.length){grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--gray)">${t.noResult}</div>`;return;}
-  grid.innerHTML=list.map(p=>{
+  const t=T[lang];const list=filtered();const g=document.getElementById('productGrid');
+  document.getElementById('productCount').textContent=t.cnt(list.length);
+  if(!list.length){g.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--gray)">${t.noRes}</div>`;return;}
+  g.innerHTML=list.map(p=>{
     const qty=cart[p.id]||0;
-    const name=lang==='zh'?p.nameZh:p.nameEn;
-    const unit=lang==='zh'?p.unitZh:p.unitEn;
-    const tagHtml=p.tag==='sale'?`<span class="tag-sale">${t.tagSale}</span>`:p.tag==='new'?`<span class="tag-new">${t.tagNew}</span>`:'';
-    const origHtml=p.orig?`<span class="price-orig">¥${p.orig}</span>`:'';
-    const ctrl=qty>0
-      ?`<div class="qty-ctrl"><button onclick="changeQty(${p.id},-1,event)">−</button><span>${qty}</span><button onclick="changeQty(${p.id},1,event)">+</button></div>`
-      :`<button class="add-btn" onclick="addToCart(${p.id},event)">+</button>`;
-    return `<div class="product-card"><div class="product-img">${p.emoji}${tagHtml}</div><div class="product-info"><div class="product-name">${name}</div><div class="product-unit">${unit}</div><div class="product-bottom"><div><span class="price">¥${p.price}</span>${origHtml}</div><div id="ctrl-${p.id}">${ctrl}</div></div></div></div>`;
+    const name=lang==='zh'?p.name_zh:p.name_en;
+    const unit=lang==='zh'?p.unit_zh:p.unit_en;
+    const tag=p.tag==='sale'?`<span class="tag-sale">${t.tsale}</span>`:p.tag==='new'?`<span class="tag-new">${t.tnew}</span>`:'';
+    const orig=p.original_price?`<span class="price-orig">¥${p.original_price}</span>`:'';
+    const ctrl=qty>0?`<div class="qty-ctrl"><button onclick="chg(${p.id},-1,event)">−</button><span>${qty}</span><button onclick="chg(${p.id},1,event)">+</button></div>`:`<button class="add-btn" onclick="add(${p.id},event)">+</button>`;
+    return `<div class="product-card"><div class="product-img">${p.emoji}${tag}</div><div class="product-info"><div class="product-name">${name}</div><div class="product-unit">${unit}</div><div class="product-bottom"><div><span class="price">¥${p.price}</span>${orig}</div><div id="c${p.id}">${ctrl}</div></div></div></div>`;
   }).join('');
 }
-
-function addToCart(id,e){
-  e.stopPropagation(); cart[id]=(cart[id]||0)+1; updateCartUI(); renderCtrl(id);
-  const p=products.find(x=>x.id===id); showToast(T[lang].addedToast(p));
-}
-function changeQty(id,delta,e){
-  e.stopPropagation(); cart[id]=(cart[id]||0)+delta;
-  if(cart[id]<=0)delete cart[id]; updateCartUI(); renderCtrl(id);
-}
-function renderCtrl(id){
-  const qty=cart[id]||0; const el=document.getElementById(`ctrl-${id}`); if(!el)return;
-  el.innerHTML=qty>0
-    ?`<div class="qty-ctrl"><button onclick="changeQty(${id},-1,event)">−</button><span>${qty}</span><button onclick="changeQty(${id},1,event)">+</button></div>`
-    :`<button class="add-btn" onclick="addToCart(${id},event)">+</button>`;
-}
-function updateCartUI(){
-  const total=Object.keys(cart).reduce((s,id)=>s+products.find(p=>p.id==id).price*cart[id],0);
-  const count=Object.values(cart).reduce((s,v)=>s+v,0);
-  document.getElementById('cartCount').textContent=count;
-  document.getElementById('cartTotal').textContent=`¥${total.toFixed(2)}`;
-  renderCartItems();
-}
-function renderCartItems(){
-  const t=T[lang]; const container=document.getElementById('cartItems'); const keys=Object.keys(cart);
-  if(!keys.length){container.innerHTML=`<div class="cart-empty"><div class="empty-emoji">🛒</div><div>${t.emptyCart}</div><div style="font-size:12px;margin-top:4px">${t.emptyCartSub}</div></div>`;return;}
-  container.innerHTML=keys.map(id=>{
-    const p=products.find(x=>x.id==id); const qty=cart[id];
-    const name=lang==='zh'?p.nameZh:p.nameEn;
-    return `<div class="cart-item"><div class="cart-item-emoji">${p.emoji}</div><div class="cart-item-info"><div class="cart-item-name">${name}</div><div class="cart-item-price">¥${p.price} × ${qty} = ¥${(p.price*qty).toFixed(2)}</div></div><div class="qty-ctrl"><button onclick="changeQty(${id},-1,event)">−</button><span>${qty}</span><button onclick="changeQty(${id},1,event)">+</button></div></div>`;
-  }).join('');
+function add(id,e){e.stopPropagation();cart[id]=(cart[id]||0)+1;updateUI();rCtrl(id);const p=products.find(x=>x.id===id);toast(T[lang].added(p));}
+function chg(id,d,e){e.stopPropagation();cart[id]=(cart[id]||0)+d;if(cart[id]<=0)delete cart[id];updateUI();rCtrl(id);}
+function rCtrl(id){const qty=cart[id]||0;const el=document.getElementById('c'+id);if(!el)return;el.innerHTML=qty>0?`<div class="qty-ctrl"><button onclick="chg(${id},-1,event)">−</button><span>${qty}</span><button onclick="chg(${id},1,event)">+</button></div>`:`<button class="add-btn" onclick="add(${id},event)">+</button>`;}
+function total(){return Object.keys(cart).reduce((s,id)=>{const p=products.find(x=>x.id==id);return s+(p?p.price*cart[id]:0);},0);}
+function count(){return Object.values(cart).reduce((s,v)=>s+v,0);}
+function updateUI(){document.getElementById('cartCount').textContent=count();document.getElementById('cartTotal').textContent='¥'+total().toFixed(2);renderCart();}
+function renderCart(){
+  const t=T[lang];const c=document.getElementById('cartItems');const keys=Object.keys(cart);
+  if(!keys.length){c.innerHTML=`<div class="cart-empty"><div class="empty-emoji">🛒</div><div>${t.eCart}</div><div style="font-size:12px;margin-top:4px">${t.eSub}</div></div>`;return;}
+  c.innerHTML=keys.map(id=>{const p=products.find(x=>x.id==id);if(!p)return'';const qty=cart[id];const n=lang==='zh'?p.name_zh:p.name_en;return`<div class="cart-item"><div class="cart-item-emoji">${p.emoji}</div><div class="cart-item-info"><div class="cart-item-name">${n}</div><div class="cart-item-price">¥${p.price} × ${qty} = ¥${(p.price*qty).toFixed(2)}</div></div><div class="qty-ctrl"><button onclick="chg(${id},-1,event)">−</button><span>${qty}</span><button onclick="chg(${id},1,event)">+</button></div></div>`;}).join('');
 }
 function openCart(){document.getElementById('cartOverlay').classList.add('open');document.getElementById('cartSidebar').classList.add('open');}
 function closeCart(){document.getElementById('cartOverlay').classList.remove('open');document.getElementById('cartSidebar').classList.remove('open');}
-function checkout(){
-  const t=T[lang]; const count=Object.values(cart).reduce((s,v)=>s+v,0);
-  if(!count){showToast(t.emptyToast);return;}
-  const total=Object.keys(cart).reduce((s,id)=>s+products.find(p=>p.id==id).price*cart[id],0);
-  cart={};updateCartUI();renderGrid();closeCart();showToast(t.orderToast(total.toFixed(2)));
+function openCheckout(){const t=T[lang];if(!count()){toast(t.empty);return;}document.getElementById('orderSummary').textContent=t.sum(count(),total().toFixed(2));document.getElementById('checkoutModal').classList.add('open');closeCart();}
+function closeCheckout(){document.getElementById('checkoutModal').classList.remove('open');}
+async function submitOrder(){
+  const t=T[lang];
+  const name=document.getElementById('rName').value.trim();
+  const phone=document.getElementById('rPhone').value.trim();
+  const addr=document.getElementById('rAddr').value.trim();
+  if(!name||!phone||!addr){toast(t.fill);return;}
+  const items=Object.keys(cart).map(id=>{const p=products.find(x=>x.id==id);return{id:+id,name_zh:p.name_zh,name_en:p.name_en,emoji:p.emoji,price:p.price,qty:cart[id]};});
+  const tot=total();
+  try{
+    await POST('orders',{items,total:tot,address:`${name} | ${phone} | ${addr} | ${document.getElementById('dTime').value}`,status:'待处理'});
+    for(const item of items){const p=products.find(x=>x.id==item.id);if(p)await PATCH('products','id=eq.'+item.id,{stock:Math.max(0,p.stock-item.qty)});}
+    cart={};updateUI();closeCheckout();toast(t.ok(tot.toFixed(2)));
+    await load();
+  }catch(e){toast(t.fail);}
 }
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
-
-applyLang();
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),3000);}
+async function load(){
+  try{const d=await GET('products','select=*&order=id');if(Array.isArray(d)&&d.length)products=d;}catch(e){}
+  renderGrid();
+}
+async function init(){
+  try{
+    const check=await GET('products','select=id&limit=1');
+    if(!Array.isArray(check)||!check.length)await POST('products',SEEDS);
+  }catch(e){}
+  await load();applyLang();
+}
+init();
 </script>
 </body>
 </html>
