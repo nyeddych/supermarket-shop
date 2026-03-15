@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的账户 — 鲜惠超市</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{--green:#2d6a4f;--green-mid:#40916c;--green-pale:#d8f3dc;--orange:#e76f51;--dark:#1b1b1b;--gray:#6b7280;--gray-light:#f3f4f6;--white:#fff;--shadow:0 4px 20px rgba(45,106,79,.08);}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Noto Sans SC',sans-serif;background:#f7f9f4;color:var(--dark);}
+  nav{background:var(--white);border-bottom:2px solid var(--green-pale);padding:0 5vw;position:sticky;top:0;z-index:100;}
+  .nav-inner{max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:16px;height:60px;}
+  .logo{font-family:'Noto Serif SC',serif;font-size:20px;font-weight:700;color:var(--green);text-decoration:none;}
+  .logo span{color:var(--orange);}
+  .nav-right{margin-left:auto;display:flex;align-items:center;gap:12px;}
+  .lang-toggle{display:flex;gap:2px;background:var(--gray-light);border-radius:50px;padding:3px;}
+  .lb{border:none;background:transparent;border-radius:50px;padding:4px 10px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--gray);}
+  .lb.active{background:var(--green);color:#fff;}
+  .nav-link{font-size:14px;color:var(--gray);text-decoration:none;padding:6px 12px;border-radius:8px;}
+  .nav-link:hover{background:var(--green-pale);color:var(--green);}
+  .container{max-width:1000px;margin:0 auto;padding:32px 5vw;}
+  .profile-header{background:linear-gradient(135deg,var(--green) 0%,var(--green-mid) 100%);border-radius:20px;padding:32px;color:#fff;display:flex;align-items:center;gap:24px;margin-bottom:24px;}
+  .avatar{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;flex-shrink:0;}
+  .profile-info h2{font-family:'Noto Serif SC',serif;font-size:22px;margin-bottom:4px;}
+  .profile-info p{font-size:14px;opacity:.8;}
+  .profile-badge{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);border-radius:50px;padding:4px 12px;font-size:12px;margin-top:8px;display:inline-block;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .card{background:var(--white);border-radius:16px;padding:24px;box-shadow:var(--shadow);}
+  .card-title{font-size:16px;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+  .frow{margin-bottom:14px;}
+  .frow label{display:block;font-size:13px;color:var(--gray);margin-bottom:5px;}
+  .frow input{width:100%;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 14px;font-size:14px;font-family:inherit;outline:none;}
+  .frow input:focus{border-color:var(--green);}
+  .btn{border:none;border-radius:50px;padding:10px 24px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s;}
+  .btn-primary{background:var(--green);color:#fff;}
+  .btn-primary:hover{background:var(--orange);}
+  .btn-danger{background:#fee2e2;color:#dc2626;}
+  .btn-danger:hover{background:#dc2626;color:#fff;}
+  .btn-sm{padding:6px 14px;font-size:12px;}
+  .order-item{border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:12px;}
+  .order-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .order-id{font-size:12px;color:var(--gray);}
+  .order-total{font-weight:700;color:var(--green);}
+  .order-items{font-size:13px;color:var(--gray);margin-bottom:8px;}
+  .order-addr{font-size:12px;color:var(--gray);}
+  .pill{border-radius:50px;padding:3px 10px;font-size:12px;font-weight:500;}
+  .p-pending{background:#fef3c7;color:#92400e;}
+  .p-shipping{background:#dbeafe;color:#1e40af;}
+  .p-done{background:var(--green-pale);color:var(--green);}
+  .addr-item{border:1px solid #e5e7eb;border-radius:10px;padding:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:flex-start;}
+  .addr-info{font-size:14px;line-height:1.6;}
+  .addr-default{background:var(--green-pale);color:var(--green);border-radius:50px;padding:2px 8px;font-size:11px;margin-left:8px;}
+  .addr-actions{display:flex;gap:6px;flex-shrink:0;}
+  .msg{padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:12px;display:none;}
+  .msg.success{background:var(--green-pale);color:var(--green);display:block;}
+  .msg.error{background:#fee2e2;color:#dc2626;display:block;}
+  .logout-btn{background:var(--gray-light);color:var(--gray);border:none;border-radius:50px;padding:8px 16px;font-size:13px;cursor:pointer;font-family:inherit;}
+  .logout-btn:hover{background:#fee2e2;color:#dc2626;}
+  .add-addr-form{border:1.5px dashed #e5e7eb;border-radius:10px;padding:16px;margin-top:12px;display:none;}
+  .add-addr-form.open{display:block;}
+  @media(max-width:700px){.grid2{grid-template-columns:1fr;}.profile-header{flex-direction:column;text-align:center;}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="index.html">鲜<span>惠</span></a>
+    <div class="nav-right">
+      <a class="nav-link" href="index.html" id="navShop">继续购物</a>
+      <button class="logout-btn" id="logoutBtn" onclick="logout()">退出登录</button>
+      <div class="lang-toggle">
+        <button class="lb active" id="lbZH" onclick="setLang('zh')">中文</button>
+        <button class="lb" id="lbEN" onclick="setLang('en')">EN</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="profile-header">
+    <div class="avatar" id="avatarEl">?</div>
+    <div class="profile-info">
+      <h2 id="profileName">加载中…</h2>
+      <p id="profileEmail"></p>
+      <span class="profile-badge" id="profileRole"></span>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <!-- 基本信息 -->
+    <div class="card">
+      <div class="card-title">👤 <span id="t-info">基本信息</span></div>
+      <div class="msg" id="infoMsg"></div>
+      <div class="frow"><label id="l-name">姓名</label><input type="text" id="editName"></div>
+      <div class="frow"><label id="l-phone">手机号</label><input type="tel" id="editPhone"></div>
+      <div class="frow"><label id="l-email">邮箱</label><input type="email" id="editEmail" disabled style="background:var(--gray-light)"></div>
+      <button class="btn btn-primary" id="saveInfoBtn" onclick="saveProfile()">保存修改</button>
+    </div>
+
+    <!-- 修改密码 -->
+    <div class="card">
+      <div class="card-title">🔒 <span id="t-pwd">修改密码</span></div>
+      <div class="msg" id="pwdMsg"></div>
+      <div class="frow"><label id="l-newpwd">新密码</label><input type="password" id="newPwd" placeholder="至少6位"></div>
+      <div class="frow"><label id="l-confirmpwd">确认新密码</label><input type="password" id="confirmPwd"></div>
+      <button class="btn btn-primary" id="savePwdBtn" onclick="changePwd()">更新密码</button>
+    </div>
+  </div>
+
+  <!-- 收货地址 -->
+  <div class="card" style="margin-top:20px">
+    <div class="card-title" style="justify-content:space-between">
+      <span>📍 <span id="t-addr">收货地址</span></span>
+      <button class="btn btn-primary btn-sm" id="addAddrBtn" onclick="toggleAddrForm()">+ 新增地址</button>
+    </div>
+    <div id="addrList"></div>
+    <div class="add-addr-form" id="addrForm">
+      <div class="frow"><label id="la-name">收货人</label><input type="text" id="addrName"></div>
+      <div class="frow"><label id="la-phone">手机号</label><input type="tel" id="addrPhone"></div>
+      <div class="frow"><label id="la-addr">详细地址</label><input type="text" id="addrText"></div>
+      <div style="display:flex;gap:8px;margin-top:4px">
+        <button class="btn btn-primary btn-sm" id="saveAddrBtn" onclick="saveAddr()">保存</button>
+        <button class="btn btn-sm" style="background:var(--gray-light)" onclick="toggleAddrForm()">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 我的订单 -->
+  <div class="card" style="margin-top:20px">
+    <div class="card-title">📦 <span id="t-orders">我的订单</span></div>
+    <div id="orderList"><div style="text-align:center;padding:24px;color:var(--gray)">⏳</div></div>
+  </div>
+</div>
+
+<script>
+const SB_URL='https://zzbdfuusbbbupxwlkyth.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6YmRmdXVzYmJidXB4d2xreXRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1NzcyMzQsImV4cCI6MjA4OTE1MzIzNH0.oHv8KlOuRh1TRKsFY32p2JIWu1Qghq91tigzRxaSMvE';
+
+let token=localStorage.getItem('sb_token');
+let user=null;
+try{user=JSON.parse(localStorage.getItem('sb_user'));}catch(e){}
+if(!token){window.location.href='login.html';}
+
+const H=(t)=>({'apikey':SB_KEY,'Authorization':'Bearer '+(t||token),'Content-Type':'application/json','Prefer':'return=representation'});
+const GET=(path,q='')=>fetch(SB_URL+'/rest/v1/'+path+(q?'?'+q:''),{headers:H()}).then(r=>r.json());
+const POST=(path,body)=>fetch(SB_URL+'/rest/v1/'+path,{method:'POST',headers:H(),body:JSON.stringify(body)}).then(r=>r.json());
+const PATCH=(path,q,body)=>fetch(SB_URL+'/rest/v1/'+path+'?'+q,{method:'PATCH',headers:H(),body:JSON.stringify(body)}).then(r=>r.json());
+const DEL=(path,q)=>fetch(SB_URL+'/rest/v1/'+path+'?'+q,{method:'DELETE',headers:H()});
+
+const T={
+  zh:{navShop:'继续购物',logout:'退出登录',tInfo:'基本信息',tPwd:'修改密码',tAddr:'收货地址',tOrders:'我的订单',lName:'姓名',lPhone:'手机号',lEmail:'邮箱（不可修改）',lNewPwd:'新密码',lConfirmPwd:'确认新密码',saveInfo:'保存修改',savePwd:'更新密码',addAddr:'+ 新增地址',laName:'收货人',laPhone:'手机号',laAddr:'详细地址',saveAddrBtn:'保存',cancel:'取消',defaultLabel:'默认',setDefault:'设为默认',deleteAddr:'删除',infoSaved:'✅ 信息已保存',pwdSaved:'✅ 密码已更新',pwdMismatch:'两次密码不一致',fillAll:'请填写完整',addrSaved:'✅ 地址已保存',addrDeleted:'地址已删除',noOrders:'暂无订单',roleCustomer:'普通会员',roleAdmin:'管理员',statusMap:{待处理:'待处理',配送中:'配送中',已完成:'已完成'}},
+  en:{navShop:'Keep Shopping',logout:'Logout',tInfo:'Profile',tPwd:'Change Password',tAddr:'Saved Addresses',tOrders:'My Orders',lName:'Full Name',lPhone:'Phone',lEmail:'Email (cannot change)',lNewPwd:'New Password',lConfirmPwd:'Confirm Password',saveInfo:'Save Changes',savePwd:'Update Password',addAddr:'+ Add Address',laName:'Recipient',laPhone:'Phone',laAddr:'Full Address',saveAddrBtn:'Save',cancel:'Cancel',defaultLabel:'Default',setDefault:'Set Default',deleteAddr:'Delete',infoSaved:'✅ Profile saved',pwdSaved:'✅ Password updated',pwdMismatch:'Passwords do not match',fillAll:'Please fill in all fields',addrSaved:'✅ Address saved',addrDeleted:'Address deleted',noOrders:'No orders yet',roleCustomer:'Member',roleAdmin:'Admin',statusMap:{待处理:'Pending',配送中:'Shipping',已完成:'Completed'}},
+};
+let lang='zh';
+let profile=null;
+let addresses=[];
+let orders=[];
+
+function setLang(l){lang=l;document.getElementById('lbZH').classList.toggle('active',l==='zh');document.getElementById('lbEN').classList.toggle('active',l==='en');applyLang();}
+function applyLang(){
+  const t=T[lang];
+  document.getElementById('navShop').textContent=t.navShop;
+  document.getElementById('logoutBtn').textContent=t.logout;
+  document.getElementById('t-info').textContent=t.tInfo;
+  document.getElementById('t-pwd').textContent=t.tPwd;
+  document.getElementById('t-addr').textContent=t.tAddr;
+  document.getElementById('t-orders').textContent=t.tOrders;
+  document.getElementById('l-name').textContent=t.lName;
+  document.getElementById('l-phone').textContent=t.lPhone;
+  document.getElementById('l-email').textContent=t.lEmail;
+  document.getElementById('l-newpwd').textContent=t.lNewPwd;
+  document.getElementById('l-confirmpwd').textContent=t.lConfirmPwd;
+  document.getElementById('saveInfoBtn').textContent=t.saveInfo;
+  document.getElementById('savePwdBtn').textContent=t.savePwd;
+  document.getElementById('addAddrBtn').textContent=t.addAddr;
+  document.getElementById('la-name').textContent=t.laName;
+  document.getElementById('la-phone').textContent=t.laPhone;
+  document.getElementById('la-addr').textContent=t.laAddr;
+  document.getElementById('saveAddrBtn').textContent=t.saveAddrBtn;
+  if(profile)renderProfile();
+  renderAddresses();renderOrders();
+}
+
+async function loadAll(){
+  if(!user)return;
+  try{
+    const [p,a,o]=await Promise.all([
+      GET('profiles','select=*&id=eq.'+user.id),
+      GET('addresses','select=*&user_id=eq.'+user.id+'&order=is_default.desc,created_at.asc'),
+      GET('orders','select=*&order=created_at.desc&limit=20'),
+    ]);
+    if(Array.isArray(p)&&p[0])profile=p[0];
+    if(Array.isArray(a))addresses=a;
+    if(Array.isArray(o))orders=o;
+  }catch(e){}
+  renderProfile();renderAddresses();renderOrders();
+}
+
+function renderProfile(){
+  const t=T[lang];
+  if(!profile&&!user)return;
+  const name=profile?.name||user?.email?.split('@')[0]||'User';
+  const email=profile?.email||user?.email||'';
+  const role=profile?.role||'customer';
+  document.getElementById('avatarEl').textContent=name.charAt(0).toUpperCase();
+  document.getElementById('profileName').textContent=name;
+  document.getElementById('profileEmail').textContent=email;
+  document.getElementById('profileRole').textContent=role==='admin'?t.roleAdmin:t.roleCustomer;
+  document.getElementById('editName').value=name;
+  document.getElementById('editPhone').value=profile?.phone||'';
+  document.getElementById('editEmail').value=email;
+}
+
+function renderAddresses(){
+  const t=T[lang];
+  const el=document.getElementById('addrList');
+  if(!addresses.length){el.innerHTML=`<div style="text-align:center;padding:20px;color:var(--gray);font-size:14px">${lang==='zh'?'暂无收货地址':'No saved addresses'}</div>`;return;}
+  el.innerHTML=addresses.map(a=>`
+    <div class="addr-item">
+      <div class="addr-info">
+        <strong>${a.name}</strong> ${a.phone}${a.is_default?`<span class="addr-default">${t.defaultLabel}</span>`:''}
+        <br>${a.address}
+      </div>
+      <div class="addr-actions">
+        ${!a.is_default?`<button class="btn btn-sm" style="background:var(--gray-light)" onclick="setDefaultAddr(${a.id})">${t.setDefault}</button>`:''}
+        <button class="btn btn-sm btn-danger" onclick="deleteAddr(${a.id})">${t.deleteAddr}</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderOrders(){
+  const t=T[lang];
+  const el=document.getElementById('orderList');
+  if(!orders.length){el.innerHTML=`<div style="text-align:center;padding:24px;color:var(--gray)">${t.noOrders}</div>`;return;}
+  const statusClass=s=>({待处理:'p-pending',配送中:'p-shipping',已完成:'p-done'}[s]||'');
+  el.innerHTML=orders.map(o=>{
+    const items=Array.isArray(o.items)?o.items.map(i=>`${i.emoji}${lang==='zh'?i.name_zh:i.name_en}×${i.qty}`).join('、'):'';
+    const statusText=t.statusMap[o.status]||o.status;
+    const addrParts=(o.address||'').split('|');
+    return`<div class="order-item">
+      <div class="order-header">
+        <span class="order-id">#${o.id} · ${new Date(o.created_at).toLocaleDateString(lang==='zh'?'zh-CN':'en-US')}</span>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="pill ${statusClass(o.status)}">${statusText}</span>
+          <span class="order-total">¥${o.total?.toFixed(2)}</span>
+        </div>
+      </div>
+      <div class="order-items">${items}</div>
+      <div class="order-addr">📍 ${addrParts[0]||''} ${addrParts[2]||''}</div>
+    </div>`;
+  }).join('');
+}
+
+async function saveProfile(){
+  const t=T[lang];
+  const name=document.getElementById('editName').value.trim();
+  const phone=document.getElementById('editPhone').value.trim();
+  if(!name){showMsg('infoMsg','error',t.fillAll);return;}
+  await PATCH('profiles','id=eq.'+user.id,{name,phone});
+  if(profile)Object.assign(profile,{name,phone});
+  showMsg('infoMsg','success',t.infoSaved);
+  renderProfile();
+}
+
+async function changePwd(){
+  const t=T[lang];
+  const pwd=document.getElementById('newPwd').value;
+  const pwd2=document.getElementById('confirmPwd').value;
+  if(!pwd){showMsg('pwdMsg','error',t.fillAll);return;}
+  if(pwd!==pwd2){showMsg('pwdMsg','error',t.pwdMismatch);return;}
+  await fetch(`${SB_URL}/auth/v1/user`,{method:'PUT',headers:H(),body:JSON.stringify({password:pwd})});
+  showMsg('pwdMsg','success',t.pwdSaved);
+  document.getElementById('newPwd').value='';document.getElementById('confirmPwd').value='';
+}
+
+function toggleAddrForm(){document.getElementById('addrForm').classList.toggle('open');}
+
+async function saveAddr(){
+  const t=T[lang];
+  const name=document.getElementById('addrName').value.trim();
+  const phone=document.getElementById('addrPhone').value.trim();
+  const address=document.getElementById('addrText').value.trim();
+  if(!name||!phone||!address){alert(t.fillAll);return;}
+  const isFirst=addresses.length===0;
+  const res=await POST('addresses',{user_id:user.id,name,phone,address,is_default:isFirst});
+  if(Array.isArray(res)&&res[0])addresses.push(res[0]);
+  showMsg('infoMsg','success',t.addrSaved);
+  toggleAddrForm();
+  ['addrName','addrPhone','addrText'].forEach(i=>document.getElementById(i).value='');
+  renderAddresses();
+}
+
+async function setDefaultAddr(id){
+  for(const a of addresses){await PATCH('addresses','id=eq.'+a.id,{is_default:a.id===id});a.is_default=a.id===id;}
+  renderAddresses();
+}
+
+async function deleteAddr(id){
+  await DEL('addresses','id=eq.'+id);
+  addresses=addresses.filter(a=>a.id!==id);
+  showMsg('infoMsg','success',T[lang].addrDeleted);
+  renderAddresses();
+}
+
+function showMsg(id,type,msg){const el=document.getElementById(id);el.className='msg '+type;el.textContent=msg;setTimeout(()=>el.className='msg',3000);}
+
+function logout(){localStorage.removeItem('sb_token');localStorage.removeItem('sb_refresh');localStorage.removeItem('sb_user');window.location.href='login.html';}
+
+loadAll();applyLang();
+</script>
+</body>
+</html>

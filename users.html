@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>用户管理 — 鲜惠后台</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{--green:#2d6a4f;--green-pale:#d8f3dc;--orange:#e76f51;--dark:#1b1b1b;--gray:#6b7280;--gray-light:#f3f4f6;--white:#fff;--sw:220px;--shadow:0 2px 12px rgba(0,0,0,.08);}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Noto Sans SC',sans-serif;background:#f7f9f4;color:var(--dark);display:flex;min-height:100vh;}
+  .sidebar{width:var(--sw);background:var(--green);color:#fff;position:fixed;top:0;left:0;height:100vh;display:flex;flex-direction:column;z-index:10;}
+  .s-logo{padding:20px;font-family:'Noto Serif SC',serif;font-size:18px;font-weight:700;border-bottom:1px solid rgba(255,255,255,.15);}
+  .s-logo span{color:#a7f3d0;}
+  .s-nav{padding:12px 0;flex:1;}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:12px 20px;cursor:pointer;font-size:14px;font-weight:500;color:rgba(255,255,255,.75);transition:all .2s;border-left:3px solid transparent;text-decoration:none;}
+  .nav-item:hover{background:rgba(255,255,255,.1);color:#fff;}
+  .nav-item.active{background:rgba(255,255,255,.15);color:#fff;border-left-color:#a7f3d0;}
+  .lang-row{display:flex;gap:2px;background:rgba(255,255,255,.15);border-radius:50px;padding:3px;margin:0 16px 12px;}
+  .lb{flex:1;border:none;background:transparent;border-radius:50px;padding:5px 0;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;color:rgba(255,255,255,.7);text-align:center;}
+  .lb.active{background:rgba(255,255,255,.9);color:var(--green);}
+  .s-foot{padding:14px 20px;border-top:1px solid rgba(255,255,255,.15);font-size:12px;color:rgba(255,255,255,.5);}
+  .main{margin-left:var(--sw);flex:1;}
+  .topbar{background:var(--white);border-bottom:1px solid #e5e7eb;padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5;box-shadow:var(--shadow);}
+  .topbar-title{font-size:17px;font-weight:700;}
+  .content{padding:24px 28px;}
+  .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;}
+  .stat-card{background:var(--white);border-radius:12px;padding:18px;box-shadow:var(--shadow);}
+  .stat-label{font-size:13px;color:var(--gray);margin-bottom:6px;}
+  .stat-value{font-size:26px;font-weight:700;}
+  .card{background:var(--white);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:20px;}
+  .card-header{padding:14px 18px;border-bottom:1px solid var(--gray-light);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .card-title{font-size:15px;font-weight:700;}
+  .search-bar{display:flex;align-items:center;background:var(--gray-light);border-radius:50px;padding:0 14px;gap:8px;}
+  .search-bar input{border:none;background:transparent;font-size:13px;font-family:inherit;outline:none;padding:8px 0;width:200px;}
+  .btn{border:none;border-radius:8px;padding:7px 14px;font-size:13px;font-family:inherit;cursor:pointer;font-weight:500;transition:all .2s;}
+  .btn-primary{background:var(--green);color:#fff;}.btn-primary:hover{background:#40916c;}
+  .btn-warning{background:#fef3c7;color:#92400e;}.btn-warning:hover{background:#f59e0b;color:#fff;}
+  .btn-sm{padding:4px 10px;font-size:12px;}
+  table{width:100%;border-collapse:collapse;}
+  th{background:var(--gray-light);padding:11px 14px;text-align:left;font-size:12px;font-weight:600;color:var(--gray);}
+  td{padding:11px 14px;font-size:13px;border-bottom:1px solid var(--gray-light);}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#fafff8;}
+  .pill{border-radius:50px;padding:3px 10px;font-size:12px;font-weight:500;}
+  .p-admin{background:#ede9fe;color:#5b21b6;}
+  .p-customer{background:var(--green-pale);color:var(--green);}
+  .avatar-sm{width:32px;height:32px;border-radius:50%;background:var(--green-pale);color:var(--green);display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;margin-right:8px;}
+  .toast{position:fixed;bottom:20px;right:20px;background:var(--dark);color:#fff;border-radius:10px;padding:10px 18px;font-size:13px;z-index:200;transform:translateY(60px);opacity:0;transition:all .3s;pointer-events:none;}
+  .toast.show{transform:translateY(0);opacity:1;}
+  .empty-row td{text-align:center;color:var(--gray);padding:24px;}
+  .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;display:none;align-items:center;justify-content:center;}
+  .modal-bg.open{display:flex;}
+  .modal{background:var(--white);border-radius:14px;width:min(400px,90vw);padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+  .modal h3{font-size:17px;font-weight:700;margin-bottom:18px;}
+  .frow{margin-bottom:14px;}
+  .frow label{display:block;font-size:12px;font-weight:500;color:var(--gray);margin-bottom:5px;}
+  .frow select{width:100%;border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none;}
+  .modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="s-logo">鲜<span>惠</span> <span style="font-size:12px;font-weight:400;opacity:.6" id="sideLabel">后台</span></div>
+  <nav class="s-nav">
+    <a class="nav-item" href="admin.html">📊 <span id="n1"></span></a>
+    <a class="nav-item" href="admin.html#products">🛒 <span id="n2"></span></a>
+    <a class="nav-item" href="admin.html#orders">📦 <span id="n3"></span></a>
+    <a class="nav-item active" href="users.html">👥 <span id="n4"></span></a>
+    <a class="nav-item" href="admin.html#inventory">📋 <span id="n5"></span></a>
+  </nav>
+  <div class="lang-row">
+    <button class="lb active" id="lbZH" onclick="setLang('zh')">中文</button>
+    <button class="lb" id="lbEN" onclick="setLang('en')">EN</button>
+  </div>
+  <div class="s-foot" id="sideFooter"></div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="pageTitle">用户管理</div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <span style="font-size:12px;color:var(--gray)" id="nowTime"></span>
+      <a href="index.html" style="text-decoration:none"><button class="btn btn-primary" id="frontBtn">查看前台 →</button></a>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-label" id="sl1">总用户数</div><div class="stat-value" style="color:var(--green)" id="sv1">—</div></div>
+      <div class="stat-card"><div class="stat-label" id="sl2">管理员</div><div class="stat-value" style="color:#5b21b6" id="sv2">—</div></div>
+      <div class="stat-card"><div class="stat-label" id="sl3">普通会员</div><div class="stat-value" style="color:var(--green)" id="sv3">—</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title" id="userListTitle">👥 全部用户</div>
+        <div class="search-bar">
+          <span style="font-size:14px">🔍</span>
+          <input type="text" id="searchInput" oninput="renderUsers()" placeholder="">
+        </div>
+      </div>
+      <table>
+        <thead><tr id="userTH"></tr></thead>
+        <tbody id="userTB"></tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<!-- Role Edit Modal -->
+<div class="modal-bg" id="roleModal">
+  <div class="modal">
+    <h3 id="roleModalTitle">修改用户角色</h3>
+    <div style="font-size:14px;color:var(--gray);margin-bottom:16px" id="roleModalUser"></div>
+    <div class="frow">
+      <label id="roleLabel">角色</label>
+      <select id="roleSelect">
+        <option value="customer">普通会员 / Customer</option>
+        <option value="admin">管理员 / Admin</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" style="background:var(--gray-light)" onclick="closeRoleModal()">取消</button>
+      <button class="btn btn-primary" onclick="saveRole()" id="saveRoleBtn">保存</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SB_URL='https://zzbdfuusbbbupxwlkyth.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6YmRmdXVzYmJidXB4d2xreXRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1NzcyMzQsImV4cCI6MjA4OTE1MzIzNH0.oHv8KlOuRh1TRKsFY32p2JIWu1Qghq91tigzRxaSMvE';
+const token=localStorage.getItem('sb_token');
+if(!token){window.location.href='login.html';}
+const H={'apikey':SB_KEY,'Authorization':'Bearer '+token,'Content-Type':'application/json','Prefer':'return=representation'};
+const GET=(p,q='')=>fetch(SB_URL+'/rest/v1/'+p+(q?'?'+q:''),{headers:H}).then(r=>r.json());
+const PATCH=(p,q,b)=>fetch(SB_URL+'/rest/v1/'+p+'?'+q,{method:'PATCH',headers:H,body:JSON.stringify(b)}).then(r=>r.json());
+
+const T={
+  zh:{side:'后台',foot:'管理员：店长',front:'查看前台 →',page:'用户管理',navs:['数据概览','商品管理','订单管理','用户管理','库存预警'],sl1:'总用户数',sl2:'管理员',sl3:'普通会员',title:'👥 全部用户',searchPlaceholder:'搜索姓名或邮箱…',th:['用户','邮箱','手机','角色','注册时间','操作'],admin:'管理员',customer:'普通会员',editRole:'修改角色',roleModalTitle:'修改用户角色',roleLabel:'角色',save:'保存',cancel:'取消',roleSaved:'✅ 角色已更新',noUsers:'暂无用户数据'},
+  en:{side:'Admin',foot:'Admin: Store Manager',front:'View Store →',page:'User Management',navs:['Dashboard','Products','Orders','Users','Inventory'],sl1:'Total Users',sl2:'Admins',sl3:'Members',title:'👥 All Users',searchPlaceholder:'Search name or email…',th:['User','Email','Phone','Role','Joined','Actions'],admin:'Admin',customer:'Member',editRole:'Edit Role',roleModalTitle:'Change User Role',roleLabel:'Role',save:'Save',cancel:'Cancel',roleSaved:'✅ Role updated',noUsers:'No users found'},
+};
+
+let lang='zh',users=[],editingUserId=null;
+
+function setLang(l){lang=l;document.getElementById('lbZH').classList.toggle('active',l==='zh');document.getElementById('lbEN').classList.toggle('active',l==='en');applyLang();}
+function applyLang(){
+  const t=T[lang];
+  document.getElementById('sideLabel').textContent=t.side;
+  document.getElementById('sideFooter').textContent=t.foot;
+  document.getElementById('frontBtn').textContent=t.front;
+  document.getElementById('pageTitle').textContent=t.page;
+  document.getElementById('sl1').textContent=t.sl1;
+  document.getElementById('sl2').textContent=t.sl2;
+  document.getElementById('sl3').textContent=t.sl3;
+  document.getElementById('userListTitle').textContent=t.title;
+  document.getElementById('searchInput').placeholder=t.searchPlaceholder;
+  document.getElementById('roleModalTitle').textContent=t.roleModalTitle;
+  document.getElementById('roleLabel').textContent=t.roleLabel;
+  document.getElementById('saveRoleBtn').textContent=t.save;
+  t.navs.forEach((n,i)=>document.getElementById('n'+(i+1)).textContent=n);
+  renderUsers();
+}
+
+function renderStats(){
+  const total=users.length;
+  const admins=users.filter(u=>u.role==='admin').length;
+  document.getElementById('sv1').textContent=total;
+  document.getElementById('sv2').textContent=admins;
+  document.getElementById('sv3').textContent=total-admins;
+}
+
+function renderUsers(){
+  const t=T[lang];
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  const list=q?users.filter(u=>(u.name||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q)):users;
+  document.getElementById('userTH').innerHTML=t.th.map(h=>`<th>${h}</th>`).join('');
+  document.getElementById('userTB').innerHTML=list.length?list.map(u=>`
+    <tr>
+      <td style="display:flex;align-items:center">
+        <span class="avatar-sm">${(u.name||u.email||'?').charAt(0).toUpperCase()}</span>
+        ${u.name||'—'}
+      </td>
+      <td style="color:var(--gray)">${u.email||'—'}</td>
+      <td>${u.phone||'—'}</td>
+      <td><span class="pill ${u.role==='admin'?'p-admin':'p-customer'}">${u.role==='admin'?t.admin:t.customer}</span></td>
+      <td style="color:var(--gray);font-size:12px">${new Date(u.created_at).toLocaleDateString(lang==='zh'?'zh-CN':'en-US')}</td>
+      <td><button class="btn btn-sm btn-warning" onclick="openRoleModal('${u.id}','${u.name||u.email}','${u.role}')">${t.editRole}</button></td>
+    </tr>`).join('')
+    :`<tr class="empty-row"><td colspan="6">${t.noUsers}</td></tr>`;
+}
+
+function openRoleModal(id,name,role){
+  editingUserId=id;
+  document.getElementById('roleModalUser').textContent=name;
+  document.getElementById('roleSelect').value=role;
+  document.getElementById('roleModal').classList.add('open');
+}
+function closeRoleModal(){document.getElementById('roleModal').classList.remove('open');}
+async function saveRole(){
+  const role=document.getElementById('roleSelect').value;
+  await PATCH('profiles','id=eq.'+editingUserId,{role});
+  const u=users.find(x=>x.id===editingUserId);if(u)u.role=role;
+  toast(T[lang].roleSaved);closeRoleModal();renderUsers();renderStats();
+}
+
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2500);}
+function tick(){document.getElementById('nowTime').textContent=new Date().toLocaleString(lang==='zh'?'zh-CN':'en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});}
+setInterval(tick,1000);tick();
+
+async function init(){
+  const data=await GET('profiles','select=*&order=created_at.desc');
+  if(Array.isArray(data))users=data;
+  renderStats();applyLang();
+}
+init();
+</script>
+</body>
+</html>
