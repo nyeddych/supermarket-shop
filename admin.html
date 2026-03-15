@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>鲜惠超市 — Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{--green:#2d6a4f;--green-light:#52b788;--green-pale:#d8f3dc;--orange:#e76f51;--orange-pale:#ffddd2;--dark:#1b1b1b;--gray:#6b7280;--gray-light:#f3f4f6;--white:#fff;--sidebar-w:220px;--shadow:0 2px 12px rgba(0,0,0,.08);}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Noto Sans SC',sans-serif;background:#f7f9f4;color:var(--dark);display:flex;min-height:100vh;}
+  .sidebar{width:var(--sidebar-w);background:var(--green);color:#fff;position:fixed;top:0;left:0;height:100vh;display:flex;flex-direction:column;z-index:10;}
+  .sidebar-logo{padding:20px 20px 16px;font-family:'Noto Serif SC',serif;font-size:18px;font-weight:700;border-bottom:1px solid rgba(255,255,255,.15);}
+  .sidebar-logo span{color:#a7f3d0;}
+  .sidebar-nav{padding:12px 0;flex:1;}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:12px 20px;cursor:pointer;font-size:14px;font-weight:500;color:rgba(255,255,255,.75);transition:all .2s;border-left:3px solid transparent;}
+  .nav-item:hover{background:rgba(255,255,255,.1);color:#fff;}
+  .nav-item.active{background:rgba(255,255,255,.15);color:#fff;border-left-color:#a7f3d0;}
+  .nav-icon{font-size:16px;}
+  .lang-toggle-side{display:flex;align-items:center;gap:2px;background:rgba(255,255,255,.15);border-radius:50px;padding:3px;margin:0 16px 12px;}
+  .lang-btn-s{flex:1;border:none;background:transparent;border-radius:50px;padding:5px 0;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;color:rgba(255,255,255,.7);transition:all .2s;text-align:center;}
+  .lang-btn-s.active{background:rgba(255,255,255,.9);color:var(--green);}
+  .sidebar-footer{padding:14px 20px;border-top:1px solid rgba(255,255,255,.15);font-size:12px;color:rgba(255,255,255,.5);}
+  .main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;}
+  .topbar{background:var(--white);border-bottom:1px solid #e5e7eb;padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5;box-shadow:var(--shadow);}
+  .topbar-title{font-size:17px;font-weight:700;}
+  .topbar-right{display:flex;align-items:center;gap:12px;}
+  .admin-badge{background:var(--green-pale);color:var(--green);border-radius:50px;padding:5px 12px;font-size:13px;font-weight:500;}
+  .content{padding:24px 28px;flex:1;}
+  .page{display:none;} .page.active{display:block;}
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+  .stat-card{background:var(--white);border-radius:12px;padding:18px;box-shadow:var(--shadow);}
+  .stat-label{font-size:13px;color:var(--gray);margin-bottom:6px;}
+  .stat-value{font-size:26px;font-weight:700;margin-bottom:4px;}
+  .stat-trend{font-size:12px;color:var(--green);}
+  .stat-trend.down{color:var(--orange);}
+  .card{background:var(--white);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:20px;}
+  .card-header{padding:14px 18px;border-bottom:1px solid var(--gray-light);display:flex;align-items:center;justify-content:space-between;}
+  .card-title{font-size:15px;font-weight:700;}
+  .btn{border:none;border-radius:8px;padding:7px 14px;font-size:13px;font-family:inherit;cursor:pointer;font-weight:500;transition:all .2s;}
+  .btn-primary{background:var(--green);color:#fff;}
+  .btn-primary:hover{background:#40916c;}
+  .btn-danger{background:#fee2e2;color:#dc2626;}
+  .btn-danger:hover{background:#dc2626;color:#fff;}
+  .btn-sm{padding:4px 10px;font-size:12px;}
+  table{width:100%;border-collapse:collapse;}
+  th{background:var(--gray-light);padding:11px 14px;text-align:left;font-size:12px;font-weight:600;color:var(--gray);}
+  td{padding:11px 14px;font-size:13px;border-bottom:1px solid var(--gray-light);}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#fafff8;}
+  .status-pill{border-radius:50px;padding:3px 10px;font-size:12px;font-weight:500;}
+  .status-pending{background:#fef3c7;color:#92400e;}
+  .status-shipping{background:#dbeafe;color:#1e40af;}
+  .status-done{background:var(--green-pale);color:var(--green);}
+  .status-normal{background:var(--gray-light);color:var(--gray);}
+  .low-stock{color:var(--orange);font-weight:600;}
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;display:none;align-items:center;justify-content:center;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:var(--white);border-radius:14px;width:min(460px,90vw);padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+  .modal h3{font-size:17px;font-weight:700;margin-bottom:18px;}
+  .form-row{margin-bottom:14px;}
+  .form-row label{display:block;font-size:12px;font-weight:500;color:var(--gray);margin-bottom:5px;}
+  .form-row input,.form-row select{width:100%;border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none;transition:border-color .2s;}
+  .form-row input:focus,.form-row select:focus{border-color:var(--green);}
+  .form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;}
+  .toast{position:fixed;bottom:20px;right:20px;background:var(--dark);color:#fff;border-radius:10px;padding:10px 18px;font-size:13px;z-index:200;transform:translateY(60px);opacity:0;transition:all .3s;pointer-events:none;}
+  .toast.show{transform:translateY(0);opacity:1;}
+  @media(max-width:900px){.stats-grid{grid-template-columns:repeat(2,1fr);}.sidebar{transform:translateX(-100%);}.main{margin-left:0;}}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sidebar-logo">鲜<span>惠</span> <span style="font-size:13px;font-weight:400;opacity:.7" id="sideAdminLabel">后台</span></div>
+  <nav class="sidebar-nav">
+    <div class="nav-item active" onclick="goPage('dashboard',this)" id="nav-dashboard"><span class="nav-icon">📊</span><span class="nav-label"></span></div>
+    <div class="nav-item" onclick="goPage('products',this)" id="nav-products"><span class="nav-icon">🛒</span><span class="nav-label"></span></div>
+    <div class="nav-item" onclick="goPage('orders',this)" id="nav-orders"><span class="nav-icon">📦</span><span class="nav-label"></span></div>
+    <div class="nav-item" onclick="goPage('inventory',this)" id="nav-inventory"><span class="nav-icon">📋</span><span class="nav-label"></span></div>
+  </nav>
+  <div class="lang-toggle-side">
+    <button class="lang-btn-s active" id="sBtnZH" onclick="setLang('zh')">中文</button>
+    <button class="lang-btn-s" id="sBtnEN" onclick="setLang('en')">EN</button>
+  </div>
+  <div class="sidebar-footer" id="sideFooter"></div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="pageTitle"></div>
+    <div class="topbar-right">
+      <span style="font-size:12px;color:var(--gray)" id="nowTime"></span>
+      <span class="admin-badge" id="adminBadge">👤 管理员</span>
+      <a href="index.html" style="text-decoration:none"><button class="btn btn-primary" id="frontBtn">查看前台 →</button></a>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-label" id="stat1Label"></div><div class="stat-value" style="color:var(--green)">38</div><div class="stat-trend">↑ +12%</div></div>
+        <div class="stat-card"><div class="stat-label" id="stat2Label"></div><div class="stat-value" style="color:var(--orange)">¥2,840</div><div class="stat-trend">↑ +8%</div></div>
+        <div class="stat-card"><div class="stat-label" id="stat3Label"></div><div class="stat-value">18</div><div class="stat-trend down" id="stat3Sub"></div></div>
+        <div class="stat-card"><div class="stat-label" id="stat4Label"></div><div class="stat-value" style="color:#f59e0b">5</div><div class="stat-trend down" id="stat4Sub"></div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title" id="recentOrdersTitle"></div></div>
+        <table><thead><tr id="dashTHead"></tr></thead><tbody id="dashOrderTable"></tbody></table>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title" id="hotSellTitle"></div></div>
+        <table><thead><tr id="hotTHead"></tr></thead><tbody id="hotTable"></tbody></table>
+      </div>
+    </div>
+
+    <!-- PRODUCTS -->
+    <div class="page" id="page-products">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title" id="prodListTitle"></div>
+          <button class="btn btn-primary" id="addProdBtn" onclick="openProductModal()"></button>
+        </div>
+        <table><thead><tr id="prodTHead"></tr></thead><tbody id="productTable"></tbody></table>
+      </div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="page" id="page-orders">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title" id="allOrdersTitle"></div>
+          <select class="btn" style="border:1.5px solid #e5e7eb" onchange="filterOrders(this.value)" id="orderFilter"></select>
+        </div>
+        <table><thead><tr id="orderTHead"></tr></thead><tbody id="orderTable"></tbody></table>
+      </div>
+    </div>
+
+    <!-- INVENTORY -->
+    <div class="page" id="page-inventory">
+      <div class="card">
+        <div class="card-header"><div class="card-title" id="lowStockTitle"></div></div>
+        <table><thead><tr id="invWarnHead"></tr></thead><tbody id="inventoryTable"></tbody></table>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title" id="okStockTitle"></div></div>
+        <table><thead><tr id="invOkHead"></tr></thead><tbody id="inventoryOkTable"></tbody></table>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="productModal">
+  <div class="modal">
+    <h3 id="modalTitle"></h3>
+    <div class="form-row"><label id="lName"></label><input type="text" id="pName"></div>
+    <div class="form-row"><label id="lNameEn"></label><input type="text" id="pNameEn"></div>
+    <div class="form-row-2">
+      <div class="form-row"><label id="lCat"></label>
+        <select id="pCat">
+          <option value="生鲜">生鲜 / Fresh</option>
+          <option value="肉禽">肉禽 / Meat</option>
+          <option value="乳品">乳品 / Dairy</option>
+          <option value="零食">零食 / Snacks</option>
+          <option value="粮油">粮油 / Grains</option>
+          <option value="日用">日用 / Essentials</option>
+        </select>
+      </div>
+      <div class="form-row"><label id="lEmoji"></label><input type="text" id="pEmoji" placeholder="🥦"></div>
+    </div>
+    <div class="form-row-2">
+      <div class="form-row"><label id="lPrice"></label><input type="number" id="pPrice" step="0.1"></div>
+      <div class="form-row"><label id="lOrig"></label><input type="number" id="pOrig" step="0.1"></div>
+    </div>
+    <div class="form-row-2">
+      <div class="form-row"><label id="lUnit"></label><input type="text" id="pUnit"></div>
+      <div class="form-row"><label id="lStock"></label><input type="number" id="pStock"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" style="background:var(--gray-light)" id="cancelBtn" onclick="closeProductModal()"></button>
+      <button class="btn btn-primary" id="saveBtn" onclick="saveProduct()"></button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const T={
+  zh:{
+    sideAdmin:'后台',
+    navLabels:['数据概览','商品管理','订单管理','库存预警'],
+    sideFooter:'管理员：店长\n最后登录：今天 09:12',
+    adminBadge:'👤 管理员', frontBtn:'查看前台 →',
+    pageTitles:{dashboard:'数据概览',products:'商品管理',orders:'订单管理',inventory:'库存预警'},
+    stat1:'今日订单',stat2:'今日营业额',stat3:'在架商品',stat3Sub:'⚠ 3件库存不足',stat4:'待处理订单',stat4Sub:'需尽快处理',
+    recentOrders:'📈 近期订单',hotSell:'🔥 今日热销',
+    dashTH:['订单号','商品','金额','状态','时间','操作'],
+    hotTH:['商品','分类','今日销量','库存'],
+    prodList:'🛒 商品列表', addProd:'+ 新增商品',
+    prodTH:['商品','分类','价格','库存','状态','操作'],
+    allOrders:'📦 全部订单',
+    orderStatuses:['全部状态','待处理','配送中','已完成'],
+    orderTH:['订单号','商品摘要','金额','收货地址','状态','操作'],
+    orderActions:{pending:'开始配送',shipping:'完成',done:'✓ 已完成'},
+    lowStock:'⚠ 库存预警（低于20件）',okStock:'✅ 库存正常商品',
+    invWarnTH:['商品','分类','当前库存','预警线','建议补货量'],
+    invOkTH:['商品','分类','当前库存','状态'],
+    invSuggest:n=>`建议补 ${n} 件`,noWarn:'🎉 无库存预警',okLabel:'充足',
+    modalAdd:'➕ 新增商品',modalEdit:'✏️ 编辑商品',
+    lName:'商品名称（中文）',lNameEn:'Product Name (English)',
+    lCat:'分类',lEmoji:'Emoji图标',
+    lPrice:'售价（¥）',lOrig:'原价（¥，可选）',
+    lUnit:'规格说明',lStock:'库存',
+    cancelBtn:'取消',saveBtn:'保存',
+    savedToast:'✅ 商品已保存',updatedToast:'✅ 商品已更新',
+    toggleOn:'已上架',toggleOff:'已下架',
+    onShelf:'在售',offShelf:'下架',
+    editBtn:'编辑',shelfBtn:{true:'下架',false:'上架'},
+    fillReq:'请填写商品名称和价格',
+    orderUpdated:(id,s)=>`订单 ${id} → ${s}`,
+  },
+  en:{
+    sideAdmin:'Admin',
+    navLabels:['Dashboard','Products','Orders','Inventory'],
+    sideFooter:'Admin: Store Manager\nLast login: Today 09:12',
+    adminBadge:'👤 Admin', frontBtn:'View Store →',
+    pageTitles:{dashboard:'Dashboard',products:'Products',orders:'Orders',inventory:'Inventory'},
+    stat1:'Orders Today',stat2:"Today's Revenue",stat3:'Active Products',stat3Sub:'⚠ 3 low stock',stat4:'Pending Orders',stat4Sub:'Needs attention',
+    recentOrders:'📈 Recent Orders',hotSell:'🔥 Hot Today',
+    dashTH:['Order #','Items','Amount','Status','Time','Action'],
+    hotTH:['Product','Category','Sold Today','Stock'],
+    prodList:'🛒 Product List', addProd:'+ Add Product',
+    prodTH:['Product','Category','Price','Stock','Status','Actions'],
+    allOrders:'📦 All Orders',
+    orderStatuses:['All Status','Pending','Shipping','Completed'],
+    orderTH:['Order #','Summary','Amount','Address','Status','Action'],
+    orderActions:{pending:'Start Delivery',shipping:'Complete',done:'✓ Done'},
+    lowStock:'⚠ Low Stock Alert (under 20)',okStock:'✅ Stock Normal',
+    invWarnTH:['Product','Category','Stock','Threshold','Suggested Restock'],
+    invOkTH:['Product','Category','Stock','Status'],
+    invSuggest:n=>`Restock ${n} units`,noWarn:'🎉 No stock alerts',okLabel:'OK',
+    modalAdd:'➕ Add Product',modalEdit:'✏️ Edit Product',
+    lName:'Product Name (Chinese)',lNameEn:'Product Name (English)',
+    lCat:'Category',lEmoji:'Emoji Icon',
+    lPrice:'Price (¥)',lOrig:'Original Price (¥, optional)',
+    lUnit:'Unit / Size',lStock:'Stock',
+    cancelBtn:'Cancel',saveBtn:'Save',
+    savedToast:'✅ Product saved',updatedToast:'✅ Product updated',
+    toggleOn:'Listed',toggleOff:'Unlisted',
+    onShelf:'Active',offShelf:'Inactive',
+    editBtn:'Edit',shelfBtn:{true:'Unlist',false:'List'},
+    fillReq:'Please enter name and price',
+    orderUpdated:(id,s)=>`Order ${id} → ${s}`,
+  }
+};
+
+let lang='zh';
+let editingId=null;
+let currentPage='dashboard';
+
+let products=[
+  {id:1,nameZh:'有机西兰花',nameEn:'Organic Broccoli',cat:'生鲜',emoji:'🥦',price:5.9,orig:8.8,unitZh:'约500g/棵',unitEn:'~500g/head',stock:86,active:true},
+  {id:2,nameZh:'新疆苹果',nameEn:'Xinjiang Apple',cat:'生鲜',emoji:'🍎',price:12.9,orig:null,unitZh:'约1kg装',unitEn:'~1kg pack',stock:120,active:true},
+  {id:3,nameZh:'本地胡萝卜',nameEn:'Local Carrot',cat:'生鲜',emoji:'🥕',price:3.5,orig:null,unitZh:'500g',unitEn:'500g',stock:200,active:true},
+  {id:4,nameZh:'砂糖橙',nameEn:'Navel Orange',cat:'生鲜',emoji:'🍊',price:9.9,orig:14.9,unitZh:'约1kg',unitEn:'~1kg',stock:95,active:true},
+  {id:5,nameZh:'散养土鸡蛋',nameEn:'Free-range Eggs',cat:'肉禽',emoji:'🥚',price:28.9,orig:35,unitZh:'30枚装',unitEn:'30 pcs',stock:52,active:true},
+  {id:6,nameZh:'新鲜猪里脊',nameEn:'Pork Tenderloin',cat:'肉禽',emoji:'🥩',price:19.9,orig:null,unitZh:'300g',unitEn:'300g',stock:18,active:true},
+  {id:7,nameZh:'鲜嫩鸡腿',nameEn:'Chicken Drumstick',cat:'肉禽',emoji:'🍗',price:16.5,orig:null,unitZh:'500g',unitEn:'500g',stock:40,active:true},
+  {id:8,nameZh:'大闸蟹',nameEn:'Hairy Crab',cat:'肉禽',emoji:'🦀',price:39.9,orig:58,unitZh:'2只装',unitEn:'2 pcs',stock:12,active:true},
+  {id:9,nameZh:'纯牛奶',nameEn:'Pure Milk',cat:'乳品',emoji:'🥛',price:35.9,orig:42,unitZh:'250ml×12盒',unitEn:'250ml×12',stock:74,active:true},
+  {id:10,nameZh:'草莓酸奶',nameEn:'Strawberry Yogurt',cat:'乳品',emoji:'🍓',price:18.9,orig:null,unitZh:'200g×4杯',unitEn:'200g×4 cups',stock:60,active:true},
+  {id:11,nameZh:'冰淇淋',nameEn:'Ice Cream',cat:'乳品',emoji:'🍦',price:22,orig:null,unitZh:'73g×6支',unitEn:'73g×6 bars',stock:35,active:true},
+  {id:12,nameZh:'薯片大礼包',nameEn:'Chips Party Pack',cat:'零食',emoji:'🍟',price:26.9,orig:38,unitZh:'混合口味480g',unitEn:'Assorted 480g',stock:8,active:true},
+  {id:13,nameZh:'矿泉水',nameEn:'Mineral Water',cat:'零食',emoji:'💧',price:19.9,orig:null,unitZh:'550ml×24瓶',unitEn:'550ml×24 btls',stock:150,active:true},
+  {id:14,nameZh:'绿茶饮料',nameEn:'Green Tea Drink',cat:'零食',emoji:'🍵',price:16.5,orig:null,unitZh:'500ml×6瓶',unitEn:'500ml×6 btls',stock:80,active:true},
+  {id:15,nameZh:'东北大米',nameEn:'Northeast Rice',cat:'粮油',emoji:'🌾',price:49.9,orig:65,unitZh:'5kg',unitEn:'5kg',stock:45,active:true},
+  {id:16,nameZh:'菜籽油',nameEn:'Rapeseed Oil',cat:'粮油',emoji:'🫙',price:89.9,orig:null,unitZh:'5L',unitEn:'5L',stock:30,active:true},
+  {id:17,nameZh:'洗洁精',nameEn:'Dish Soap',cat:'日用',emoji:'🧴',price:12.9,orig:null,unitZh:'500ml×2瓶',unitEn:'500ml×2 btls',stock:90,active:true},
+  {id:18,nameZh:'厨房纸巾',nameEn:'Kitchen Roll',cat:'日用',emoji:'🧻',price:9.9,orig:15,unitZh:'2层×60张×3卷',unitEn:'2ply 60sh×3 rolls',stock:15,active:true},
+];
+
+let orders=[
+  {id:'#20240315001',summaryZh:'🥦西兰花×2 🍎苹果×1',summaryEn:'🥦Broccoli×2 🍎Apple×1',amount:24.7,addr:'北京市朝阳区建国路88号',addrEn:'88 Jianguo Rd, Chaoyang, Beijing',status:'待处理',time:'09:12'},
+  {id:'#20240315002',summaryZh:'🥚鸡蛋×1 🥛牛奶×2',summaryEn:'🥚Eggs×1 🥛Milk×2',amount:100.7,addr:'北京市海淀区中关村大街1号',addrEn:'1 Zhongguancun St, Haidian, Beijing',status:'配送中',time:'09:35'},
+  {id:'#20240315003',summaryZh:'🌾大米×1 🫙菜籽油×1',summaryEn:'🌾Rice×1 🫙Oil×1',amount:139.8,addr:'北京市西城区长安街10号',addrEn:"10 Chang'an Ave, Xicheng, Beijing",status:'已完成',time:'08:50'},
+  {id:'#20240315004',summaryZh:'🍟薯片×2 💧矿泉水×1',summaryEn:'🍟Chips×2 💧Water×1',amount:73.7,addr:'北京市丰台区南三环西路',addrEn:'S 3rd Ring W Rd, Fengtai, Beijing',status:'待处理',time:'10:02'},
+  {id:'#20240315005',summaryZh:'🥩里脊×1 🍗鸡腿×2',summaryEn:'🥩Pork×1 🍗Chicken×2',amount:52.9,addr:'北京市石景山区古城南街',addrEn:'Gucheng S St, Shijingshan, Beijing',status:'配送中',time:'10:15'},
+  {id:'#20240315006',summaryZh:'🍊砂糖橙×3 🍵绿茶×2',summaryEn:'🍊Orange×3 🍵Tea×2',amount:62.7,addr:'北京市昌平区回龙观大街',addrEn:'Huilongguan Ave, Changping, Beijing',status:'已完成',time:'08:20'},
+  {id:'#20240315007',summaryZh:'🧴洗洁精×2 🧻纸巾×3',summaryEn:'🧴Dish Soap×2 🧻Roll×3',amount:55.5,addr:'北京市顺义区后沙峪镇',addrEn:'Houshayu Town, Shunyi, Beijing',status:'待处理',time:'10:40'},
+];
+
+const statusMap={
+  zh:{待处理:'待处理',配送中:'配送中',已完成:'已完成'},
+  en:{待处理:'Pending',配送中:'Shipping',已完成:'Completed'}
+};
+function statusClass(s){return{待处理:'status-pending',配送中:'status-shipping',已完成:'status-done'}[s]||'status-normal';}
+function statusLabel(s){return statusMap[lang][s]||s;}
+
+function setLang(l){
+  lang=l;
+  document.getElementById('sBtnZH').classList.toggle('active',l==='zh');
+  document.getElementById('sBtnEN').classList.toggle('active',l==='en');
+  applyLang();
+}
+
+function applyLang(){
+  const t=T[lang];
+  document.getElementById('sideAdminLabel').textContent=t.sideAdmin;
+  ['dashboard','products','orders','inventory'].forEach((k,i)=>{
+    document.querySelector(`#nav-${k} .nav-label`).textContent=t.navLabels[i];
+  });
+  document.getElementById('sideFooter').textContent=t.sideFooter;
+  document.getElementById('adminBadge').textContent=t.adminBadge;
+  document.getElementById('frontBtn').textContent=t.frontBtn;
+  document.getElementById('pageTitle').textContent=t.pageTitles[currentPage];
+  document.getElementById('stat1Label').textContent=t.stat1;
+  document.getElementById('stat2Label').textContent=t.stat2;
+  document.getElementById('stat3Label').textContent=t.stat3;
+  document.getElementById('stat3Sub').textContent=t.stat3Sub;
+  document.getElementById('stat4Label').textContent=t.stat4;
+  document.getElementById('stat4Sub').textContent=t.stat4Sub;
+  document.getElementById('recentOrdersTitle').textContent=t.recentOrders;
+  document.getElementById('hotSellTitle').textContent=t.hotSell;
+  document.getElementById('prodListTitle').textContent=t.prodList;
+  document.getElementById('addProdBtn').textContent=t.addProd;
+  document.getElementById('allOrdersTitle').textContent=t.allOrders;
+  document.getElementById('lowStockTitle').textContent=t.lowStock;
+  document.getElementById('okStockTitle').textContent=t.okStock;
+  // order filter options
+  const sel=document.getElementById('orderFilter');
+  const curVal=sel.value;
+  sel.innerHTML=t.orderStatuses.map((s,i)=>`<option value="${i===0?'ALL':['ALL','待处理','配送中','已完成'][i]}">${s}</option>`).join('');
+  // refresh current page tables
+  renderDashOrders(); renderProducts(); renderOrders(sel.value||'ALL'); renderInventory();
+}
+
+function goPage(name,el){
+  currentPage=name;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  el.classList.add('active');
+  document.getElementById('pageTitle').textContent=T[lang].pageTitles[name];
+  if(name==='products')renderProducts();
+  if(name==='orders')renderOrders('ALL');
+  if(name==='inventory')renderInventory();
+  if(name==='dashboard')renderDashOrders();
+}
+
+function renderDashOrders(){
+  const t=T[lang];
+  document.getElementById('dashTHead').innerHTML=t.dashTH.map(h=>`<th>${h}</th>`).join('');
+  document.getElementById('hotTHead').innerHTML=t.hotTH.map(h=>`<th>${h}</th>`).join('');
+  document.getElementById('dashOrderTable').innerHTML=orders.slice(0,5).map(o=>`
+    <tr>
+      <td style="font-weight:500;font-size:11px;color:var(--gray)">${o.id}</td>
+      <td>${lang==='zh'?o.summaryZh:o.summaryEn}</td>
+      <td style="color:var(--green);font-weight:700">¥${o.amount}</td>
+      <td><span class="status-pill ${statusClass(o.status)}">${statusLabel(o.status)}</span></td>
+      <td style="color:var(--gray);font-size:12px">${o.time}</td>
+      <td>${o.status==='待处理'?`<button class="btn btn-sm btn-primary" onclick="updateOrderStatus('${o.id}','配送中')">${t.orderActions.pending}</button>`:''}</td>
+    </tr>`).join('');
+  document.getElementById('hotTable').innerHTML=[
+    {e:'🥦',zh:'有机西兰花',en:'Organic Broccoli',cat_zh:'生鲜',cat_en:'Fresh',sold:42,stock:86},
+    {e:'🍎',zh:'新疆苹果',en:'Xinjiang Apple',cat_zh:'生鲜',cat_en:'Fresh',sold:38,stock:120},
+    {e:'🥚',zh:'散养土鸡蛋',en:'Free-range Eggs',cat_zh:'肉禽',cat_en:'Meat',sold:31,stock:52},
+    {e:'🥛',zh:'纯牛奶',en:'Pure Milk',cat_zh:'乳品',cat_en:'Dairy',sold:28,stock:74},
+    {e:'🍟',zh:'薯片大礼包',en:'Chips Party Pack',cat_zh:'零食',cat_en:'Snacks',sold:19,stock:8,low:true},
+  ].map(r=>`<tr><td>${r.e} ${lang==='zh'?r.zh:r.en}</td><td>${lang==='zh'?r.cat_zh:r.cat_en}</td><td>${r.sold}</td><td class="${r.low?'low-stock':''}">${r.stock}${r.low?' ⚠':''}</td></tr>`).join('');
+}
+
+function renderProducts(){
+  const t=T[lang];
+  document.getElementById('prodTHead').innerHTML=t.prodTH.map(h=>`<th>${h}</th>`).join('');
+  document.getElementById('productTable').innerHTML=products.map(p=>`
+    <tr>
+      <td>${p.emoji} ${lang==='zh'?p.nameZh:p.nameEn}<br><span style="font-size:11px;color:var(--gray)">${lang==='zh'?p.unitZh:p.unitEn}</span></td>
+      <td>${p.cat}</td>
+      <td>¥${p.price}${p.orig?`<span style="font-size:11px;color:var(--gray);text-decoration:line-through;margin-left:4px">¥${p.orig}</span>`:''}</td>
+      <td class="${p.stock<20?'low-stock':''}">${p.stock}${p.stock<20?' ⚠':''}</td>
+      <td><span class="status-pill ${p.active?'status-done':'status-normal'}">${p.active?t.onShelf:t.offShelf}</span></td>
+      <td style="display:flex;gap:5px;flex-wrap:wrap">
+        <button class="btn btn-sm" style="background:var(--gray-light)" onclick="editProduct(${p.id})">${t.editBtn}</button>
+        <button class="btn btn-sm btn-danger" onclick="toggleProduct(${p.id})">${t.shelfBtn[p.active]}</button>
+      </td>
+    </tr>`).join('');
+}
+
+function renderOrders(filter){
+  const t=T[lang];
+  document.getElementById('orderTHead').innerHTML=t.orderTH.map(h=>`<th>${h}</th>`).join('');
+  const list=filter==='ALL'?orders:orders.filter(o=>o.status===filter);
+  document.getElementById('orderTable').innerHTML=list.map(o=>`
+    <tr>
+      <td style="font-weight:500;font-size:11px;color:var(--gray)">${o.id}</td>
+      <td>${lang==='zh'?o.summaryZh:o.summaryEn}</td>
+      <td style="color:var(--green);font-weight:700">¥${o.amount}</td>
+      <td style="font-size:12px">${lang==='zh'?o.addr:o.addrEn}</td>
+      <td><span class="status-pill ${statusClass(o.status)}">${statusLabel(o.status)}</span></td>
+      <td>
+        ${o.status==='待处理'?`<button class="btn btn-sm btn-primary" onclick="updateOrderStatus('${o.id}','配送中')">${t.orderActions.pending}</button>`:''}
+        ${o.status==='配送中'?`<button class="btn btn-sm btn-primary" onclick="updateOrderStatus('${o.id}','已完成')">${t.orderActions.shipping}</button>`:''}
+        ${o.status==='已完成'?`<span style="color:var(--gray);font-size:12px">${t.orderActions.done}</span>`:''}
+      </td>
+    </tr>`).join('');
+}
+
+function filterOrders(val){renderOrders(val);}
+
+function updateOrderStatus(id,newStatus){
+  const o=orders.find(x=>x.id===id);
+  if(o){o.status=newStatus;renderOrders(document.getElementById('orderFilter').value||'ALL');renderDashOrders();showToast(T[lang].orderUpdated(id,statusLabel(newStatus)));}
+}
+
+function renderInventory(){
+  const t=T[lang];
+  document.getElementById('invWarnHead').innerHTML=t.invWarnTH.map(h=>`<th>${h}</th>`).join('');
+  document.getElementById('invOkHead').innerHTML=t.invOkTH.map(h=>`<th>${h}</th>`).join('');
+  const low=products.filter(p=>p.stock<20);
+  const ok=products.filter(p=>p.stock>=20);
+  document.getElementById('inventoryTable').innerHTML=low.map(p=>`
+    <tr><td>${p.emoji} ${lang==='zh'?p.nameZh:p.nameEn}</td><td>${p.cat}</td>
+    <td class="low-stock">${p.stock} ⚠</td><td>20</td>
+    <td style="color:var(--green);font-weight:500">${t.invSuggest(Math.max(50-p.stock,20))}</td></tr>`).join('')
+    ||`<tr><td colspan="5" style="text-align:center;color:var(--gray);padding:20px">${t.noWarn}</td></tr>`;
+  document.getElementById('inventoryOkTable').innerHTML=ok.map(p=>`
+    <tr><td>${p.emoji} ${lang==='zh'?p.nameZh:p.nameEn}</td><td>${p.cat}</td><td>${p.stock}</td>
+    <td><span class="status-pill status-done">${t.okLabel}</span></td></tr>`).join('');
+}
+
+function openProductModal(id){
+  editingId=id||null;
+  const t=T[lang];
+  document.getElementById('modalTitle').textContent=id?t.modalEdit:t.modalAdd;
+  document.getElementById('lName').textContent=t.lName;
+  document.getElementById('lNameEn').textContent=t.lNameEn;
+  document.getElementById('lCat').textContent=t.lCat;
+  document.getElementById('lEmoji').textContent=t.lEmoji;
+  document.getElementById('lPrice').textContent=t.lPrice;
+  document.getElementById('lOrig').textContent=t.lOrig;
+  document.getElementById('lUnit').textContent=t.lUnit;
+  document.getElementById('lStock').textContent=t.lStock;
+  document.getElementById('cancelBtn').textContent=t.cancelBtn;
+  document.getElementById('saveBtn').textContent=t.saveBtn;
+  if(id){
+    const p=products.find(x=>x.id===id);
+    document.getElementById('pName').value=p.nameZh;
+    document.getElementById('pNameEn').value=p.nameEn;
+    document.getElementById('pCat').value=p.cat;
+    document.getElementById('pEmoji').value=p.emoji;
+    document.getElementById('pPrice').value=p.price;
+    document.getElementById('pOrig').value=p.orig||'';
+    document.getElementById('pUnit').value=lang==='zh'?p.unitZh:p.unitEn;
+    document.getElementById('pStock').value=p.stock;
+  } else {
+    ['pName','pNameEn','pEmoji','pPrice','pOrig','pUnit','pStock'].forEach(i=>document.getElementById(i).value='');
+  }
+  document.getElementById('productModal').classList.add('open');
+}
+function editProduct(id){openProductModal(id);}
+function closeProductModal(){document.getElementById('productModal').classList.remove('open');}
+
+function saveProduct(){
+  const t=T[lang];
+  const nameZh=document.getElementById('pName').value.trim();
+  const price=parseFloat(document.getElementById('pPrice').value);
+  if(!nameZh||!price){showToast(t.fillReq);return;}
+  const data={
+    nameZh, nameEn:document.getElementById('pNameEn').value.trim()||nameZh,
+    cat:document.getElementById('pCat').value,
+    emoji:document.getElementById('pEmoji').value||'📦',
+    price, orig:parseFloat(document.getElementById('pOrig').value)||null,
+    unitZh:document.getElementById('pUnit').value, unitEn:document.getElementById('pUnit').value,
+    stock:parseInt(document.getElementById('pStock').value)||0, active:true,
+  };
+  if(editingId){Object.assign(products.find(p=>p.id===editingId),data);showToast(t.updatedToast);}
+  else{data.id=Date.now();products.push(data);showToast(t.savedToast);}
+  closeProductModal(); renderProducts();
+}
+
+function toggleProduct(id){
+  const t=T[lang]; const p=products.find(x=>x.id===id);
+  p.active=!p.active;
+  showToast(`${lang==='zh'?p.nameZh:p.nameEn} — ${p.active?t.toggleOn:t.toggleOff}`);
+  renderProducts();
+}
+
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+function updateTime(){document.getElementById('nowTime').textContent=new Date().toLocaleString(lang==='zh'?'zh-CN':'en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});}
+setInterval(updateTime,1000); updateTime();
+
+applyLang();
+</script>
+</body>
+</html>
