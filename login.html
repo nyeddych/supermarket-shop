@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>登录 / Login — 鲜惠超市</title>
+<title>登录 / Login — 家康超市 G Mart</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{--green:#2d6a4f;--green-mid:#40916c;--green-pale:#d8f3dc;--orange:#e76f51;--dark:#1b1b1b;--gray:#6b7280;--gray-light:#f3f4f6;--white:#fff;}
@@ -41,8 +41,8 @@
 </head>
 <body>
 <div class="card">
-  <div class="logo">鲜<span>惠</span>超市</div>
-  <div class="subtitle" id="cardSub">新鲜每一天 · Fresh Every Day</div>
+  <div class="logo">家<span>康</span>超市 G Mart</div>
+  <div class="subtitle" id="cardSub">健康每一天 · Healthy Every Day</div>
   <div class="lang-row">
     <button class="lb active" id="lbZH" onclick="setLang('zh')">中文</button>
     <button class="lb" id="lbEN" onclick="setLang('en')">EN</button>
@@ -83,8 +83,8 @@ const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
 const AH={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'};
 
 const T={
-  zh:{sub:'新鲜每一天 · Fresh Every Day',tabLogin:'登录',tabReg:'注册',lEmail:'邮箱',lPwd:'密码',lForget:'忘记密码？',loginBtn:'登录',or:'或',google:'使用 Google 登录',lName:'姓名',lEmail2:'邮箱',lPwd2:'密码（至少6位）',lPwd3:'确认密码',regBtn:'注册账号',loginOk:'登录成功，跳转中…',regOk:'注册成功！请查收验证邮件，然后登录。',pwdMismatch:'两次密码不一致',fillAll:'请填写所有字段',loginFail:'邮箱或密码错误',regFail:'注册失败，请重试'},
-  en:{sub:'Fresh Every Day · 新鲜每一天',tabLogin:'Login',tabReg:'Register',lEmail:'Email',lPwd:'Password',lForget:'Forgot password?',loginBtn:'Login',or:'or',google:'Continue with Google',lName:'Full Name',lEmail2:'Email',lPwd2:'Password (min 6 chars)',lPwd3:'Confirm Password',regBtn:'Create Account',loginOk:'Login successful, redirecting…',regOk:'Account created! Check your email to verify, then login.',pwdMismatch:'Passwords do not match',fillAll:'Please fill in all fields',loginFail:'Invalid email or password',regFail:'Registration failed, please retry'},
+  zh:{sub:'健康每一天 · Healthy Every Day',tabLogin:'登录',tabReg:'注册',lEmail:'邮箱',lPwd:'密码',lForget:'忘记密码？',loginBtn:'登录',or:'或',google:'使用 Google 登录',lName:'姓名',lEmail2:'邮箱',lPwd2:'密码（至少6位）',lPwd3:'确认密码',regBtn:'注册账号',loginOk:'登录成功，跳转中…',regOk:'注册成功！请查收验证邮件，然后登录。',pwdMismatch:'两次密码不一致',fillAll:'请填写所有字段',loginFail:'邮箱或密码错误',regFail:'注册失败，请重试'},
+  en:{sub:'Healthy Every Day · 健康每一天',tabLogin:'Login',tabReg:'Register',lEmail:'Email',lPwd:'Password',lForget:'Forgot password?',loginBtn:'Login',or:'or',google:'Continue with Google',lName:'Full Name',lEmail2:'Email',lPwd2:'Password (min 6 chars)',lPwd3:'Confirm Password',regBtn:'Create Account',loginOk:'Login successful, redirecting…',regOk:'Account created! Check your email to verify, then login.',pwdMismatch:'Passwords do not match',fillAll:'Please fill in all fields',loginFail:'Invalid email or password',regFail:'Registration failed, please retry'},
 };
 let lang='zh';
 
